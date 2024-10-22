@@ -147,5 +147,6 @@
   "inventory": "Inventory",
   "inventory-products": "Inventory Products",
   "checkout-register": "Checkout Register",
-  "checkout-products": "Checkout Products"
+  "checkout-products": "Checkout Products",
+  "inventory-cakes": "Inventory Cakes"
 }

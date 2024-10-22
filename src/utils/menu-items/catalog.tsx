@@ -25,28 +25,28 @@ const catalog: NavItemType = {
       id: 'warehouse',
       title: <FormattedMessage id="warehouse" />,
       type: 'item',
-      url: '/catalogo/inventario',
+      url: '/catalogo/almacenes',
       icon: icons.ReconciliationOutlined
     },
     {
       id: 'cakes',
       title: <FormattedMessage id="cakes" />,
       type: 'item',
-      url: '/pasteles',
+      url: '/catalogo/pasteles',
       icon: icons.CakeOutlined
     },
     {
       id: 'product',
       title: <FormattedMessage id="product" />,
       type: 'item',
-      url: '/productos',
+      url: '/catalogo/productos',
       icon: icons.Inventory2Outlined
     },
     {
       id: 'branches',
       title: <FormattedMessage id="branches" />,
       type: 'item',
-      url: '/sucursales',
+      url: '/catalogo/sucursales',
       icon: icons.EnvironmentOutlined
     }
   ]

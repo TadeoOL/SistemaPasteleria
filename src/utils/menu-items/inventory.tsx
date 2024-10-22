@@ -12,7 +12,14 @@ const inventory: NavItemType = {
       id: 'inventory-products',
       title: <FormattedMessage id="inventory-products" />,
       type: 'item',
-      url: '/inventario',
+      url: '/inventario/productos/:warehouseId',
+      icon: icons.Inventory2Outlined
+    },
+    {
+      id: 'inventory-cakes',
+      title: <FormattedMessage id="inventory-cakes" />,
+      type: 'item',
+      url: '/inventario/pasteles/:warehouseId',
       icon: icons.Inventory2Outlined
     }
   ]

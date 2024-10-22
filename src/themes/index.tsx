@@ -13,7 +13,7 @@ import componentsOverride from './overrides';
 
 // types
 import { CustomShadowProps } from '../types/theme';
-import config, { ThemeMode } from '../config';
+import config, { ThemeDirection, ThemeMode } from '../config';
 
 // types
 type ThemeCustomizationProps = {
@@ -42,7 +42,7 @@ export default function ThemeCustomization({ children }: ThemeCustomizationProps
           xl: 1440
         }
       },
-      direction: 'rtl',
+      direction: ThemeDirection.LTR,
       mixins: {
         toolbar: {
           minHeight: 60,

@@ -26,7 +26,7 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { ...other } = props;
+  const { expand, drawerOpen, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand, drawerOpen }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(-90deg)',
@@ -81,12 +81,12 @@ export default function NavUser() {
           disablePadding
           secondaryAction={
             <ExpandMore
-              expand={open}
               drawerOpen={drawerOpen}
               id="basic-button"
               aria-controls={open ? 'basic-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
+              expand={open}
               onClick={handleClick}
               aria-label="show more"
             >

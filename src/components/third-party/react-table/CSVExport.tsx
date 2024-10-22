@@ -22,7 +22,7 @@ export default function CSVExport({ data, filename, headers }: CSVExportProps) {
 
   return (
     <CSVLink data={data} filename={filename} headers={headers}>
-      <Tooltip title="CSV Export">
+      <Tooltip title="Exportar a CSV">
         <DownloadOutlined style={{ fontSize: '24px', color: theme.palette.text.secondary, marginTop: 4, marginRight: 4, marginLeft: 4 }} />
       </Tooltip>
     </CSVLink>

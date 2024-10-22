@@ -38,6 +38,10 @@ const SimpleBarStyle = styled(SimpleBar)(({ theme }) => ({
   },
   '& .simplebar-mask': {
     zIndex: 'inherit'
+  },
+  '& .simplebar-placeholder': {
+    height: '0 !important',
+    maxHeight: '0 !important'
   }
 }));
 

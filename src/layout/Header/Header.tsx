@@ -35,8 +35,6 @@ export default function Header() {
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
   const isHorizontal = menuOrientation === MenuOrientation.HORIZONTAL && !downLG;
 
-  console.log({ drawerOpen });
-
   // common header
   const mainHeader: ReactNode = (
     <Toolbar>

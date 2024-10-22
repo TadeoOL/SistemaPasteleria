@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 // material-ui
 import FormControl from '@mui/material/FormControl';
-import Grid from '@mui/material/Grid';
+import Grid2 from '@mui/material/Grid2';
 import MenuItem from '@mui/material/MenuItem';
 import Pagination from '@mui/material/Pagination';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -55,8 +55,8 @@ export default function TablePagination({ getPageCount, setPageIndex, setPageSiz
   };
 
   return (
-    <Grid spacing={1} container alignItems="center" justifyContent="space-between" sx={{ width: 'auto' }}>
-      <Grid item>
+    <Grid2 spacing={1} container alignItems="center" justifyContent="space-between" sx={{ width: 'auto' }}>
+      <Grid2>
         <Stack direction="row" spacing={1} alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
             <Typography variant="caption" color="secondary">
@@ -95,10 +95,12 @@ export default function TablePagination({ getPageCount, setPageIndex, setPageSiz
             sx={{ '& .MuiOutlinedInput-input': { py: 0.75, px: 1.25, width: 36 } }}
           />
         </Stack>
-      </Grid>
-      <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
+      </Grid2>
+      <Grid2 sx={{ mt: { xs: 2, sm: 0 } }}>
         <Pagination
-          sx={{ '& .MuiPaginationItem-root': { my: 0.5 } }}
+          sx={{
+            '& .MuiPaginationItem-root': { my: 0.5 }
+          }}
           count={getPageCount()}
           page={getState().pagination.pageIndex + 1}
           onChange={handleChangePagination}
@@ -107,7 +109,7 @@ export default function TablePagination({ getPageCount, setPageIndex, setPageSiz
           showFirstButton
           showLastButton
         />
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

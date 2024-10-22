@@ -29,31 +29,32 @@ const isTokenExpired = (token: string | null): boolean => {
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ redirectTo = '/login', children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  //   const location = useLocation();
+  const token = useAuthStore((state) => state.token);
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
 
-  // const handleTokenExpiration = useCallback(() => {
-  //   logout();
-  //   toast.error('Tiempo de sesión expirado');
-  //   navigate(redirectTo);
-  // }, [logout, navigate, redirectTo]);
+  const handleTokenExpiration = useCallback(() => {
+    logout();
+    toast.error('Tiempo de sesión expirado');
+    navigate(redirectTo);
+  }, [logout, navigate, redirectTo]);
 
-  // useEffect(() => {
-  //   if (token && isTokenExpired(token)) {
-  //     handleTokenExpiration();
-  //   }
-  // }, [token, handleTokenExpiration]);
+  useEffect(() => {
+    if (token && isTokenExpired(token)) {
+      handleTokenExpiration();
+    }
+  }, [token, handleTokenExpiration]);
 
-  // useEffect(() => {
-  //   const checkTokenExpiration = () => {
-  //     if (token && isTokenExpired(token)) {
-  //       handleTokenExpiration();
-  //     }
-  //   };
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      if (token && isTokenExpired(token)) {
+        handleTokenExpiration();
+      }
+    };
 
-  //   const intervalId = setInterval(checkTokenExpiration, 60 * 1000);
-  //   return () => clearInterval(intervalId);
-  // }, [token, handleTokenExpiration]);
+    const intervalId = setInterval(checkTokenExpiration, 60 * 1000);
+    return () => clearInterval(intervalId);
+  }, [token, handleTokenExpiration]);
 
   if (!isAuthenticated) return <Navigate to={redirectTo} />;
 

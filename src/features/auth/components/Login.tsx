@@ -9,13 +9,17 @@ import { useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { loginSchema } from '../schema/loginSchema';
+import { login as loginService } from '../services/authService';
+import { toast } from 'react-toastify';
+// import axios from '../../../utils/axios';
+// const apiUrl = '/api/Auth';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
   const theme = useTheme();
   const [showPassword, setShowPassword] = React.useState(false);
-  const { login } = useAuthStore();
+  const { login: loginStore } = useAuthStore();
   const navigate = useNavigate();
   const {
     control,
@@ -29,10 +33,20 @@ const Login: React.FC = () => {
     }
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
-    login();
-    navigate('/');
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const response = await loginService(data.email, data.password);
+      console.log(response);
+      loginStore(response);
+      navigate('/');
+    } catch (error) {
+      if (typeof error === 'string' && error.includes('Las credenciales de acceso son incorrectas')) {
+        toast.error('Las credenciales de acceso son incorrectas. Por favor, inténtalo de nuevo.');
+      } else {
+        toast.error('Ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.');
+      }
+      console.error({ error });
+    }
   };
 
   return (
