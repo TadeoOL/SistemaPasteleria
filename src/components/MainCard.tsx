@@ -1,12 +1,5 @@
+import { Card, CardContent, CardContentProps, CardHeader, CardHeaderProps, CardProps, Divider, Typography, useTheme } from '@mui/material';
 import { forwardRef, CSSProperties, ReactElement } from 'react';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Card, { CardProps } from '@mui/material/Card';
-import CardContent, { CardContentProps } from '@mui/material/CardContent';
-import CardHeader, { CardHeaderProps } from '@mui/material/CardHeader';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
 
 // project import
 import Highlighter from '../components/third-party/Highlighter';

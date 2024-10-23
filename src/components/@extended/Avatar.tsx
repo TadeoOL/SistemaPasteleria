@@ -1,8 +1,5 @@
+import { styled, useTheme, Avatar as MuiAvatar, AvatarProps } from '@mui/material';
 import { ReactNode } from 'react';
-
-// material-ui
-import { styled, useTheme } from '@mui/material/styles';
-import MuiAvatar, { AvatarProps } from '@mui/material/Avatar';
 
 // project import
 import getColors from '../../utils/getColors';

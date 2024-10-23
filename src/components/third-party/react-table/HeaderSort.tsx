@@ -1,7 +1,4 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { Box, Stack, useTheme } from '@mui/material';
 
 // assets
 import CaretDownOutlined from '@ant-design/icons/CaretDownOutlined';

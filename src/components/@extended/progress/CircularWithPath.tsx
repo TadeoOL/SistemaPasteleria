@@ -1,7 +1,4 @@
-// material-ui
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import CircularProgress, { CircularProgressProps, circularProgressClasses } from '@mui/material/CircularProgress';
+import { Box, CircularProgress, circularProgressClasses, CircularProgressProps, Typography } from '@mui/material';
 
 // ==============================|| PROGRESS - CIRCULAR PATH ||============================== //
 

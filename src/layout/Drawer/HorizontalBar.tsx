@@ -1,11 +1,5 @@
+import { AppBar, Box, Container, useScrollTrigger, useTheme } from '@mui/material';
 import React, { ReactElement } from 'react';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Navigation from '../Navigation/NavListItem';
 import { mockNavigationItems } from '../../mock/mockNavigation';
 

@@ -1,6 +1,4 @@
-// material-ui
-import { styled } from '@mui/material/styles';
-import AppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { AppBar, styled, AppBarProps as MuiAppBarProps } from '@mui/material';
 
 // project import
 import { DRAWER_WIDTH } from '../../config';

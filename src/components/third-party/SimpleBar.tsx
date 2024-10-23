@@ -1,8 +1,5 @@
+import { Box, alpha, styled } from '@mui/material';
 import { ReactNode } from 'react';
-
-// material-ui
-import { alpha, styled, Theme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import { MUIStyledCommonProps } from '@mui/system';
 
 // third-party
@@ -11,6 +8,7 @@ import { BrowserView, MobileView } from 'react-device-detect';
 
 // project-import
 import { ThemeMode } from '../../config';
+import { Theme } from '@mui/material/styles';
 
 // root style
 const RootStyle = styled(BrowserView)({

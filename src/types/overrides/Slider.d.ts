@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import * as Slider from '@mui/material/Slider';
+import { Slider } from '@mui/material';
 
 declare module '@mui/material/Slider' {
   interface SliderPropsColorOverrides {

@@ -3,6 +3,7 @@ import { IWarehouse } from "../../../types/catalog/warehouse";
 
 interface Action {
   setWarehouse: (warehouse: IWarehouse | null) => void;
+  clearStates: () => void;
 }
 
 interface State {
@@ -15,7 +16,8 @@ const initialState: State = {
 
 const useWarehouseSelectedStore = create<State & Action>()((set) => ({
   ...initialState,
-  setWarehouse: (warehouse) => set({ warehouse })
+  setWarehouse: (warehouse) => set({ warehouse }),
+  clearStates: () => set(initialState)
 }));
 
 export default useWarehouseSelectedStore;

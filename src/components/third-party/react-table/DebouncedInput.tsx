@@ -1,7 +1,6 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { OutlinedInput, OutlinedInputProps } from '@mui/material';
 
-// material-ui
-import OutlinedInput, { OutlinedInputProps } from '@mui/material/OutlinedInput';
+import { useEffect, useState, ChangeEvent } from 'react';
 
 // assets
 import SearchOutlined from '@ant-design/icons/SearchOutlined';

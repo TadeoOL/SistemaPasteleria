@@ -1,11 +1,6 @@
+import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-
-// material-ui
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 
 // assets
 import EditOutlined from '@ant-design/icons/EditOutlined';

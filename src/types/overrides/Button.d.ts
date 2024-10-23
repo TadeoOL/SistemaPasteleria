@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import * as Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {

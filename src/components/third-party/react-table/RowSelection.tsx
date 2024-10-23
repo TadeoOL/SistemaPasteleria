@@ -1,5 +1,4 @@
-// material-ui
-import Chip from '@mui/material/Chip';
+import { Chip } from '@mui/material';
 
 // ==============================|| ROW SELECTION - PREVIEW ||============================== //
 

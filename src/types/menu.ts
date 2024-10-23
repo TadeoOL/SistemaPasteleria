@@ -1,7 +1,6 @@
-import { ReactNode } from 'react';
+import { ChipProps } from '@mui/material';
 
-// material-ui
-import { ChipProps } from '@mui/material/Chip';
+import { ReactNode } from 'react';
 
 // project-import
 import { GenericCardProps } from './root';

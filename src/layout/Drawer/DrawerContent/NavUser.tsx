@@ -1,16 +1,7 @@
+import { Box, IconButton, IconButtonProps, List, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, styled } from '@mui/material';
+
 import { useState, MouseEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-// material-ui
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 
 // project import
 import Avatar from '../../../components/@extended/Avatar';

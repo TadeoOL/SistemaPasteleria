@@ -1,12 +1,13 @@
-// material-ui
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import { InputBaseProps } from '@mui/material/InputBase';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
+import {
+  Checkbox,
+  FormControl,
+  InputBaseProps,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Typography,
+} from '@mui/material';
 
 // third-party
 import { Column, SortingState, TableState } from '@tanstack/react-table';

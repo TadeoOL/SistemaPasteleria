@@ -1,5 +1,5 @@
 interface IUser {
-  id: number;
+  id: string;
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno: string;

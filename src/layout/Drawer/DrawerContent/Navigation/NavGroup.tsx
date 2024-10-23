@@ -1,19 +1,21 @@
+import {
+  Box,
+  ClickAwayListener,
+  Divider,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Popper,
+  styled,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
+
 import { Fragment, useEffect, useState } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
-
-// material-ui
-import { useTheme, styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import Typography from '@mui/material/Typography';
 
 // third-party
 import { FormattedMessage } from 'react-intl';

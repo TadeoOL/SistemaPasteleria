@@ -1,3 +1,4 @@
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import React, { useState, useMemo } from 'react';
 import {
   useReactTable,
@@ -9,7 +10,6 @@ import {
   getPaginationRowModel,
   getExpandedRowModel
 } from '@tanstack/react-table';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
 import MainCard from '../../MainCard';
 import ScrollX from '../../ScrollX';
 import RowSelection from './RowSelection';

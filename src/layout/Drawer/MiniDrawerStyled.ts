@@ -1,34 +1,37 @@
-// material-ui
-import { styled, Theme, CSSObject } from '@mui/material/styles';
-import Drawer from '@mui/material/Drawer';
+import { Drawer, styled } from '@mui/material';
 
 // project import
 import { DRAWER_WIDTH, ThemeMode } from '../../config';
+import { Theme } from '@mui/material/styles';
+import { CSSObject } from '@mui/material';
 
 const openedMixin = (theme: Theme) =>
-  ({
+  (({
     width: DRAWER_WIDTH,
     borderRight: '1px solid',
     borderRightColor: theme.palette.divider,
+
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     }),
+
     overflowX: 'hidden',
     boxShadow: theme.palette.mode === ThemeMode.DARK ? theme.customShadows.z1 : 'none'
-  }) as CSSObject;
+  }) as CSSObject);
 
 const closedMixin = (theme: Theme) =>
-  ({
+  (({
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
+
     overflowX: 'hidden',
     width: theme.spacing(7.5),
     borderRight: 'none',
     boxShadow: theme.customShadows.z1
-  }) as CSSObject;
+  }) as CSSObject);
 
 // ==============================|| DRAWER - MINI STYLED ||============================== //
 

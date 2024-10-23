@@ -1,5 +1,4 @@
-// material-ui
-import { alpha, Theme } from '@mui/material/styles';
+import { alpha } from '@mui/material';
 
 // project import
 import getColors from '../../utils/getColors';
@@ -7,6 +6,7 @@ import getShadow from '../../utils/getShadow';
 
 // types
 import { ExtendedStyleProps } from '../../types/extended';
+import { Theme } from '@mui/material/styles';
 
 // ==============================|| BUTTON - COLORS ||============================== //
 

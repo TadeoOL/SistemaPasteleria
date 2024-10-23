@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import * as Alert from '@mui/material/Alert';
+import { Alert } from '@mui/material';
 
 declare module '@mui/material/Alert' {
   interface AlertPropsColorOverrides {

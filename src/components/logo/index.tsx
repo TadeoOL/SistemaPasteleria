@@ -1,9 +1,7 @@
+import { ButtonBase, SxProps } from '@mui/material';
+
 import { Link } from 'react-router-dom';
 import { To } from 'history';
-
-// material-ui
-import { SxProps } from '@mui/material/styles';
-import ButtonBase from '@mui/material/ButtonBase';
 
 // project import
 import Logo from './LogoMain';

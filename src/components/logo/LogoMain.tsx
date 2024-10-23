@@ -1,5 +1,4 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
 
 // project-import
 import { ThemeMode } from '../../config';
@@ -18,8 +17,6 @@ import bakeryLogo from '/images/bakery-menu-logo.png';
 export default function LogoMain() {
   const theme = useTheme();
   return (
-    <img src={theme.palette.mode === ThemeMode.DARK ? bakeryLogo : bakeryLogo} alt="bakery-menu-logo" width="200" />
-
     // <>
     //   <svg width="60px" height="60px" viewBox="0 0 512.00 512.00" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
     //     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -168,5 +165,6 @@ export default function LogoMain() {
     //     </g>
     //   </svg>
     // </>
+    (<img src={theme.palette.mode === ThemeMode.DARK ? bakeryLogo : bakeryLogo} alt="bakery-menu-logo" width="200" />)
   );
 }

@@ -1,11 +1,5 @@
+import { Box, CardActions, Collapse, Divider, Tooltip } from '@mui/material';
 import { useState } from 'react';
-
-// material-ui
-import Box from '@mui/material/Box';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
 
 // third-party
 import { CopyToClipboard } from 'react-copy-to-clipboard';

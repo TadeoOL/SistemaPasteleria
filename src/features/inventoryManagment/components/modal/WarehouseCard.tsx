@@ -1,5 +1,5 @@
+import { Avatar, Box, Card, CardActionArea, CardContent, Chip, Typography } from '@mui/material';
 import React from 'react';
-import { Card, CardContent, CardActionArea, Typography, Box, Chip, Avatar } from '@mui/material';
 import { Warehouse as WarehouseIcon } from '@mui/icons-material';
 import { IWarehouse } from '../../../../types/catalog/warehouse';
 

@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import * as Chip from '@mui/material/Chip';
+import { Chip } from '@mui/material';
 
 declare module '@mui/material/Chip' {
   interface ChipPropsVariantOverrides {

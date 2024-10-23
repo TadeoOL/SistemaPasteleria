@@ -1,5 +1,4 @@
-//material-ui
-import { PaletteColorOptions } from '@mui/material/styles';
+import { PaletteColorOptions } from '@mui/material';
 
 //project-import
 import { ThemeMode } from '../../config';

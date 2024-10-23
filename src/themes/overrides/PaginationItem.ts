@@ -1,6 +1,4 @@
-// material-ui
-import { Theme } from '@mui/material/styles';
-import { PaginationProps } from '@mui/material/Pagination';
+import { PaginationProps, Theme } from '@mui/material';
 
 // project import
 import getColors from '../../utils/getColors';

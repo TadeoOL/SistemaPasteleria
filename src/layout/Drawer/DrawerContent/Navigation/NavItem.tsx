@@ -1,15 +1,16 @@
-import { Link, useLocation, matchPath } from 'react-router-dom';
+import {
+  Avatar,
+  Box,
+  Chip,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { Link, useLocation, matchPath } from 'react-router-dom';
 
 // project import
 import Dot from '../../../../components/@extended/Dot';

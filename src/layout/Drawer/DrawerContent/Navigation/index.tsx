@@ -1,12 +1,5 @@
+import { Box, Divider, List, Theme, Typography, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
-
-// material-ui
-import { Theme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 
 // project import
 import NavItem from './NavItem';

@@ -1,20 +1,21 @@
+import {
+  Box,
+  ButtonBase,
+  CardContent,
+  ClickAwayListener,
+  Grid2,
+  Paper,
+  Popper,
+  Stack,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+  useTheme
+} from '@mui/material';
+
 import { useRef, useState, ReactNode, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import ButtonBase from '@mui/material/ButtonBase';
-import CardContent from '@mui/material/CardContent';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grid2 from '@mui/material/Grid2';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import Stack from '@mui/material/Stack';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 
 // project import
 import ProfileTab from './ProfileTab';
@@ -65,7 +66,7 @@ export default function Profile() {
   const { logout } = useAuthStore();
   const handleLogout = async () => {
     try {
-      await logout();
+      logout();
       navigate(`/login`, {
         state: {
           from: ''

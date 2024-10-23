@@ -1,12 +1,6 @@
+import { Divider, Grid2, Breadcrumbs as MuiBreadcrumbs, Typography, useTheme } from '@mui/material';
 import { CSSProperties, ReactElement, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Divider from '@mui/material/Divider';
-import Grid2 from '@mui/material/Grid2';
-import Typography from '@mui/material/Typography';
-import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project import
 import MainCard from '../../components/MainCard';

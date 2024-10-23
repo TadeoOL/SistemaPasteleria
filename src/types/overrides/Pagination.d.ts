@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import * as Pagination from '@mui/material/Pagination';
+import { Pagination } from '@mui/material';
 
 declare module '@mui/material/Pagination' {
   interface PaginationPropsColorOverrides {

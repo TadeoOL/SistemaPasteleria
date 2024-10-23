@@ -1,12 +1,6 @@
+import { Box, Container, Theme, Toolbar, useMediaQuery } from '@mui/material';
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-
-// material-ui
-import { Theme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 
 // project import
 import Loader from '../../components/Loader';

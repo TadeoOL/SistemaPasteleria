@@ -1,6 +1,4 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import { Box, BoxProps, useTheme } from '@mui/material';
 
 // project import
 import { ColorProps } from '../../types/extended';

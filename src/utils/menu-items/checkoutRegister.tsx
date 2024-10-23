@@ -12,8 +12,8 @@ const checkoutRegister: NavItemType = {
   title: <FormattedMessage id="checkout-register" />,
   children: [
     {
-      id: 'checkout-products',
-      title: <FormattedMessage id="checkout-products" />,
+      id: 'checkout-sales',
+      title: <FormattedMessage id="checkout-sales" />,
       type: 'item',
       url: '/ventas',
       icon: icons.ShoppingCartOutlined

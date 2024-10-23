@@ -1,8 +1,5 @@
+import { IconButtonProps, IconButton as MuiIconButton, alpha, styled } from '@mui/material';
 import { forwardRef, ReactNode, Ref } from 'react';
-
-// material-ui
-import MuiIconButton, { IconButtonProps } from '@mui/material/IconButton';
-import { alpha, styled } from '@mui/material/styles';
 
 // project imports
 import getColors from '../../utils/getColors';

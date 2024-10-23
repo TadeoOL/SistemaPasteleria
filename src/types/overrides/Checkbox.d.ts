@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import * as Checkbox from '@mui/material/Checkbox';
+import { Checkbox } from '@mui/material';
 
 declare module '@mui/material/Checkbox' {
   interface CheckboxPropsSizeOverrides {

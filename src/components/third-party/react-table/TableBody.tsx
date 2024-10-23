@@ -1,4 +1,4 @@
-import { Table as MUITable, TableBody as MUITableBody, TableCell, TableContainer, TableHead, TableRow, Stack, Box } from '@mui/material';
+import { Box, Stack, Table as MUITable, TableBody as MUITableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Table, flexRender } from '@tanstack/react-table';
 import HeaderSort from './HeaderSort';
 import EmptyTable from './EmptyTable';

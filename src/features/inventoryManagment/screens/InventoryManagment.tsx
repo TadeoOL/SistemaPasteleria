@@ -1,3 +1,4 @@
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import GenericModal from '../../../components/GenericModal';
 import { useState, useEffect } from 'react';
@@ -5,7 +6,6 @@ import { WarehouseSelector } from '../components/modal/WarehouseSelector';
 import useWarehouseSelectedStore from '../store/warehouseSelected';
 import { useAuthStore } from '../../auth/store/authStore';
 import { useGetWarehousesByBranch } from '../../catalog/hooks/useGetWarehousesByBranch';
-import { Box, Button, Stack, Typography } from '@mui/material';
 
 export const InventoryManagment = () => {
   const [openWarehouseSelector, setOpenWarehouseSelector] = useState(false);
@@ -76,3 +76,5 @@ export const InventoryManagment = () => {
     </>
   );
 };
+
+export default InventoryManagment;

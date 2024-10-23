@@ -1,7 +1,4 @@
-// material-ui
-import { Theme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import { CheckboxProps } from '@mui/material/Checkbox';
+import { Box, CheckboxProps, Theme } from '@mui/material';
 
 // project import
 import getColors from '../../utils/getColors';

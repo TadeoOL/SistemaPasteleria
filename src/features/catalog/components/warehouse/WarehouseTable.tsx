@@ -1,7 +1,5 @@
-import { Fragment, useMemo, useState } from 'react';
-import { alpha, useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import {
+  Box,
   Button,
   Divider,
   MenuItem,
@@ -13,8 +11,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Box
+  alpha,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
+
+import { Fragment, useMemo, useState } from 'react';
 import {
   ColumnDef,
   HeaderGroup,

@@ -1,5 +1,4 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
 
 // third-party
 import SyntaxHighlighter from 'react-syntax-highlighter';

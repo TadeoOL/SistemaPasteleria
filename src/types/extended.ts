@@ -1,9 +1,4 @@
-// material ui
-import { Theme } from '@mui/material/styles';
-import { ButtonProps } from '@mui/material/Button';
-import { ChipProps } from '@mui/material/Chip';
-import { IconButtonProps } from '@mui/material/IconButton';
-import { SliderProps } from '@mui/material/Slider';
+import { ButtonProps, ChipProps, IconButtonProps, SliderProps, Theme } from '@mui/material';
 import { LoadingButtonProps } from '@mui/lab/LoadingButton';
 
 // ==============================|| EXTENDED COMPONENT - TYPES ||============================== //

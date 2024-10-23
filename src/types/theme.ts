@@ -1,5 +1,4 @@
-// material-ui
-import { SimplePaletteColorOptions, PaletteColorOptions } from '@mui/material/styles';
+import { PaletteColorOptions, SimplePaletteColorOptions } from '@mui/material';
 
 // ==============================|| DEFAULT THEME - TYPES ||============================== //
 

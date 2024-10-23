@@ -1,12 +1,5 @@
+import { Box, Collapse, Fade, Grow, Slide, Zoom, ZoomProps } from '@mui/material';
 import { forwardRef, CSSProperties, ExoticComponent, ReactElement, Ref } from 'react';
-
-// material-ui
-import Collapse from '@mui/material/Collapse';
-import Fade from '@mui/material/Fade';
-import Box from '@mui/material/Box';
-import Grow from '@mui/material/Grow';
-import Slide from '@mui/material/Slide';
-import Zoom, { ZoomProps } from '@mui/material/Zoom';
 
 // ==============================|| TRANSITIONS ||============================== //
 

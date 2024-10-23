@@ -1,9 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import DashboardLayout from '../layout/Dashboard/DashboardLayout';
-import { CheckoutProductsView } from '../features/checkoutRegister/screens/checkoutProducts/CheckoutProductsView';
 import Loadable from '../components/Loadable';
 import { lazy } from 'react';
-import { InventoryManagment } from '../features/inventoryManagment/screens/InventoryManagment';
+import ErrorPage from '../components/ErrorPage';
+
+const DashboardLayout = Loadable(lazy(() => import('../layout/Dashboard/DashboardLayout')));
+const InventoryManagment = Loadable(lazy(() => import('../features/inventoryManagment/screens/InventoryManagment')));
 
 const WarehouseView = Loadable(lazy(() => import('../features/catalog/components/warehouse/Warehouse')));
 const BranchView = Loadable(lazy(() => import('../features/catalog/components/branch/Branch')));
@@ -11,12 +12,15 @@ const CakeView = Loadable(lazy(() => import('../features/catalog/components/cake
 const ProductView = Loadable(lazy(() => import('../features/catalog/components/product/Product')));
 const InventoryProductsView = Loadable(lazy(() => import('../features/inventoryManagment/components/product/InventoryProducts')));
 const InventoryCakesView = Loadable(lazy(() => import('../features/inventoryManagment/components/cake/InventoryCakes')));
+const CheckoutRegister = Loadable(lazy(() => import('../features/checkoutRegister/screens/CheckoutRegister')));
+const Sales = Loadable(lazy(() => import('../features/checkoutRegister/components/CashRegister')));
 
 const MainRoutes = {
   path: '/',
   children: [
     {
       path: '/',
+      errorElement: <ErrorPage />,
       element: <DashboardLayout />,
       children: [
         {
@@ -25,7 +29,16 @@ const MainRoutes = {
         },
         {
           path: 'ventas',
-          element: <CheckoutProductsView />
+          children: [
+            {
+              path: '',
+              element: <CheckoutRegister />
+            },
+            {
+              path: 'caja/:cashRegisterId',
+              element: <Sales />
+            }
+          ]
         },
         {
           path: 'catalogo',

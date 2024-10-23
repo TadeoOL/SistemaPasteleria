@@ -1,5 +1,4 @@
-// material-ui
-import { alpha, createTheme } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material';
 
 // third-party
 import { presetDarkPalettes, presetPalettes, PalettesProps } from '@ant-design/colors';

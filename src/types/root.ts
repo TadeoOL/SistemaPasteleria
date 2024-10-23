@@ -1,8 +1,6 @@
-import { ComponentClass, FunctionComponent } from 'react';
-
-// material-ui
-import { SvgIconTypeMap } from '@mui/material/SvgIcon';
+import {  SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { ComponentClass, FunctionComponent } from 'react';
 
 // ==============================|| ROOT TYPES ||============================== //
 

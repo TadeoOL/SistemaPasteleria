@@ -1,37 +1,40 @@
+import { Modal } from '@mui/material';
 import { useMemo, ReactElement } from 'react';
-import Modal from '@mui/material/Modal';
 import MainCard from '../components/MainCard';
 import SimpleBar from '../components/third-party/SimpleBar';
 
 // types
-export type FormComponentProps<T> = {
-  [key: string]: T | null | (() => void);
-};
+export type FormComponentProps<T, P = {}> = {
+  [key: string]: T | null | (() => void) | any;
+} & P;
 
-interface ModalProps<T> {
+interface ModalProps<T, P = {}> {
   open: boolean;
   modalToggler: (state: boolean) => void;
   formData: T | null;
-  FormComponent: React.ComponentType<FormComponentProps<T>>;
+  FormComponent: React.ComponentType<FormComponentProps<T, P>>;
   formDataPropName: string;
+  additionalProps?: P;
 }
 
-export default function GenericModal<T extends object>({
+export default function GenericModal<T extends object, P = {}>({
   open,
   modalToggler,
   formData,
   FormComponent,
-  formDataPropName
-}: ModalProps<T>): ReactElement {
+  formDataPropName,
+  additionalProps = {} as P
+}: ModalProps<T, P>): ReactElement {
   const closeModal = () => modalToggler(false);
 
   const form = useMemo(() => {
-    const props: FormComponentProps<T> = {
+    const props: FormComponentProps<T, P> = {
       [formDataPropName]: formData,
-      closeModal
+      closeModal,
+      ...additionalProps
     };
     return <FormComponent {...props} />;
-  }, [formData, FormComponent, formDataPropName]);
+  }, [formData, FormComponent, formDataPropName, additionalProps]);
 
   return (
     <Modal

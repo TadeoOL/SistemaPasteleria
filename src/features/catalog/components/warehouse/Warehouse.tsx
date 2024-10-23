@@ -1,9 +1,9 @@
+import { Stack, Tooltip } from '@mui/material';
 import { ColumnDef } from '@tanstack/react-table';
 import Loader from '../../../../components/Loader';
 import { useGetWarehouses } from '../../hooks/useGetWarehouses';
 import { useMemo, useState } from 'react';
 import { IWarehouse } from '../../../../types/catalog/warehouse';
-import { Stack, Tooltip } from '@mui/material';
 import IconButton from '../../../../components/@extended/IconButton';
 
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined';

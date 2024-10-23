@@ -1,6 +1,4 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip, useTheme } from '@mui/material';
 
 // third-party
 import { CSVLink } from 'react-csv';

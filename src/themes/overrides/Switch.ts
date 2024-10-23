@@ -1,6 +1,4 @@
-// material-ui
-import { Theme } from '@mui/material/styles';
-import { SwitchProps } from '@mui/material/Switch';
+import { SwitchProps, Theme } from '@mui/material';
 
 // ==============================|| SWITCH - SIZE STYLE ||============================== //
 
@@ -24,7 +22,7 @@ function getSizeStyle(size?: SwitchProps['size']): SwitchSizeProps {
   }
 }
 
-function switchStyle(theme: Theme, size?: SwitchProps['size']) {
+function switchStyle(_: Theme, size?: SwitchProps['size']) {
   const sizes: SwitchSizeProps = getSizeStyle(size);
 
   return {

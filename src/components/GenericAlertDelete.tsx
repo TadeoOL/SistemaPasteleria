@@ -1,9 +1,4 @@
-// material-ui
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Button, Dialog, DialogContent, Stack, Typography } from '@mui/material';
 
 // project import
 import Avatar from '../components/@extended/Avatar';

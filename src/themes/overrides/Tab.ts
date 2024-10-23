@@ -1,5 +1,5 @@
-// material-ui
-import { alpha, Theme } from '@mui/material/styles';
+import { alpha } from '@mui/material';
+import { Theme } from '@mui/material/styles';
 
 // ==============================|| OVERRIDES - TAB ||============================== //
 

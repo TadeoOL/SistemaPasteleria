@@ -1,10 +1,5 @@
+import { Box, Drawer, Theme, useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
-
-// material-ui
-import { Theme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 
 // project import
 import DrawerHeader from './DrawerHeader';

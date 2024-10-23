@@ -1,5 +1,4 @@
-// material-ui
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material';
 
 const ScrollX = styled('div')({
   width: '100%',

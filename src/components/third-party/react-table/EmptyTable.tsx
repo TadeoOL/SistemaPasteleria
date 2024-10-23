@@ -1,7 +1,4 @@
-// material-ui
-import { styled } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Stack, Typography, styled } from '@mui/material';
 
 // project-import
 import { ThemeMode } from '../../../config';
