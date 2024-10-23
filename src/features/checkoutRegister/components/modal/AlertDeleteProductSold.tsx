@@ -5,9 +5,10 @@ import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useCashRegisterStore } from '../../store/cashRegister';
-import { deleteProductSold } from '../../services/cashRegisterService';
+import { deleteSale } from '../../services/cashRegisterService';
 import { ICashRegisterDetails } from '../../../../types/checkoutRegister/cashRegister';
 import GenericAlertDelete from '../../../../components/GenericAlertDelete';
+import { useParams } from 'react-router-dom';
 
 // types
 interface Props {
@@ -20,13 +21,14 @@ interface Props {
 export default function AlertDeleteProductSold({ id, title, open, handleClose }: Props) {
   const queryClient = useQueryClient();
   const { cashRegister: cashRegisterId } = useCashRegisterStore();
+  const { cashRegisterId: cashRegisterIdParam } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-      await deleteProductSold(id);
-      queryClient.setQueryData(['cashRegister', cashRegisterId?.id], (oldData: ICashRegisterDetails | undefined) => {
+      await deleteSale(id);
+      queryClient.setQueryData(['cashRegister', cashRegisterIdParam || cashRegisterId?.id], (oldData: ICashRegisterDetails | undefined) => {
         if (!oldData) return {};
         return {
           ...oldData,
@@ -47,8 +49,8 @@ export default function AlertDeleteProductSold({ id, title, open, handleClose }:
     <GenericAlertDelete
       open={open}
       title={title}
-      type="sucursal"
-      additionalInfo="se eliminarán todas las sucursales asociadas."
+      type="venta"
+      additionalInfo="se eliminarán todos los detalles de la venta."
       onClose={handleClose}
       onDelete={handleDelete}
       isLoading={isLoading}

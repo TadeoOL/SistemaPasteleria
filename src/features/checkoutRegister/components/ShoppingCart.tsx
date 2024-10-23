@@ -8,10 +8,12 @@ import { useGetCakes } from '../../catalog/hooks/useGetCakes';
 import { ICake } from '../../../types/catalog/cake';
 import GenericModal from '../../../components/GenericModal';
 import GenerateSaleForm from './forms/GenerateSaleForm';
+import { ISaleDetails } from '../../../types/checkoutRegister/cashRegister';
 
 interface ICartItem {
   cake: ICake;
   quantity: number;
+  price: number;
 }
 
 interface ISaleFormData {
@@ -32,13 +34,22 @@ const ShoppingCart = () => {
     cashAmount: null,
     notes: ''
   });
+  const saleDetails: ISaleDetails[] = useMemo(
+    () =>
+      cartItems.map((item) => ({
+        id_Pastel: item.cake.id,
+        cantidad: item.quantity,
+        precioPastel: item.price
+      })),
+    [cartItems]
+  );
 
   const addToCart = (cake: ICake) => {
     const existingItem = cartItems.find((item) => item.cake.id === cake.id);
     if (existingItem) {
       setCartItems(cartItems.map((item) => (item.cake.id === cake.id ? { ...item, quantity: item.quantity + 1 } : item)));
     } else {
-      setCartItems([...cartItems, { cake, quantity: 1 }]);
+      setCartItems([...cartItems, { cake, quantity: 1, price: cake.precioVenta }]);
     }
   };
 
@@ -146,7 +157,7 @@ const ShoppingCart = () => {
         open={isModalOpen}
         modalToggler={setIsModalOpen}
         formData={saleFormData}
-        FormComponent={() => <GenerateSaleForm totalAmount={totalAmount} onClose={() => setIsModalOpen(false)} />}
+        FormComponent={() => <GenerateSaleForm totalAmount={totalAmount} onClose={() => setIsModalOpen(false)} saleDetails={saleDetails} />}
         formDataPropName="formData"
       />
     </Box>

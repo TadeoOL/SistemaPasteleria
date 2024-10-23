@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, DialogActions, DialogContent, Divider } from '@mui/material';
 import { DialogTitle } from '@mui/material';
 import { TextField, Select, MenuItem, FormControl, InputLabel, Typography, Box } from '@mui/material';
@@ -8,19 +8,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { createSale } from '../../services/cashRegisterService';
 import { createSaleFormSchema } from '../../schema/salesSchema';
+import { useParams } from 'react-router-dom';
+import { ICashRegisterDetails, ISaleDetails } from '../../../../types/checkoutRegister/cashRegister';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface GenerateSaleFormProps {
   onClose: () => void;
   totalAmount: number;
+  saleDetails: ISaleDetails[];
 }
 
 type ISaleFormData = z.infer<ReturnType<typeof createSaleFormSchema>>;
 
-const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose, totalAmount }) => {
+const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose, totalAmount, saleDetails }) => {
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<ISaleFormData>({
     resolver: zodResolver(createSaleFormSchema(totalAmount)),
@@ -30,10 +35,27 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
       notes: ''
     }
   });
+  const { cashRegisterId } = useParams();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === 'paymentType' && value.paymentType !== PaymentType.Efectivo) {
+        setValue('cashAmount', totalAmount);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setValue, totalAmount]);
 
   const onSubmit: SubmitHandler<ISaleFormData> = async (data) => {
     try {
-      await createSale(data);
+      const sale = await createSale({ ...data, totalAmount, cashRegisterId: cashRegisterId as string, saleDetails: saleDetails });
+      queryClient.setQueryData(['cashRegister', cashRegisterId], (prevData: ICashRegisterDetails) => {
+        return {
+          ...prevData,
+          ventas: [...prevData.ventas, sale]
+        };
+      });
       onClose();
     } catch (error) {
       console.error(error);

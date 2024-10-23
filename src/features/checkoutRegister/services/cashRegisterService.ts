@@ -1,4 +1,4 @@
-import { ICashRegisterDetails } from "../../../types/checkoutRegister/cashRegister";
+import { ICashRegisterDetails, ICashRegisterSales, ISaleDetails } from "../../../types/checkoutRegister/cashRegister";
 import { PaymentType } from "../../../types/checkoutRegister/paymentTypes";
 import axios from "../../../utils/axios";
 
@@ -19,8 +19,12 @@ export const getCashRegisterByUser = async (id: string): Promise<ICashRegisterDe
   return response.data;
 };
 
-export const deleteProductSold = async (id: string): Promise<void> => {
-  const response = await axios.delete(`${apiUrl}/cancelar-venta/${id}`);
+export const deleteSale = async (id: string): Promise<void> => {
+  const response = await axios.delete(`${apiUrl}/cancelar-venta/${id}`,{
+    params: {
+      motivoCancelacion: 'Venta cancelada'
+    }
+  });
   return response.data;
 };
 
@@ -28,8 +32,23 @@ export const createSale = async (data: {
   paymentType: PaymentType;
   cashAmount: number;
   notes?: string;
-}): Promise<void> => {
-  const response = await axios.post(`${apiUrl}/registrar-venta`, data);
+  totalAmount: number;
+  cashRegisterId: string;
+  saleDetails: ISaleDetails[];
+}): Promise<ICashRegisterSales> => {
+  const response = await axios.post(`${apiUrl}/registrar-venta`, {
+    tipoPago: data.paymentType,
+    montoPago: data.cashAmount,
+    totalVenta: data.totalAmount,
+    notas: data.notes,
+    id_Caja: data.cashRegisterId,
+    detalleVentas: data.saleDetails
+  });
+  return response.data;
+};
+
+export const closeCashRegister = async (cashAmount: string, cashRegisterId: string): Promise<void> => {
+  const response = await axios.post(`${apiUrl}/cerrar-caja/${cashRegisterId}`, { dineroCorte: cashAmount });
   return response.data;
 };
 

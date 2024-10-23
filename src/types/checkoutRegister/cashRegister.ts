@@ -57,3 +57,9 @@ export interface CashRegisterWithdrawa {
   ventas: ICashRegisterSales[];  
   retiros: CashRegisterWithdrawa[];  
 }
+
+export interface ISaleDetails {
+  id_Pastel: string;
+  cantidad: number;
+  precioPastel: number;
+}
