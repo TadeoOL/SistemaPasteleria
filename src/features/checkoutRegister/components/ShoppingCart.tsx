@@ -4,17 +4,10 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useGetCakes } from '../../catalog/hooks/useGetCakes';
 import { ICake } from '../../../types/catalog/cake';
 import GenericModal from '../../../components/GenericModal';
 import GenerateSaleForm from './forms/GenerateSaleForm';
-import { ISaleDetails } from '../../../types/checkoutRegister/cashRegister';
-
-interface ICartItem {
-  cake: ICake;
-  quantity: number;
-  price: number;
-}
+import { ICartItem, ISaleDetails } from '../../../types/checkoutRegister/cashRegister';
 
 interface ISaleFormData {
   totalAmount: number;
@@ -23,10 +16,9 @@ interface ISaleFormData {
   notes: string;
 }
 
-const ShoppingCart = () => {
+const ShoppingCart = ({ cakes }: { cakes: ICake[] }) => {
   const [searchTerm, setSearchTerm] = useState<ICake | null>(null);
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
-  const { data: cakes } = useGetCakes();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [saleFormData, setSaleFormData] = useState<ISaleFormData>({
     totalAmount: 0,
@@ -157,7 +149,14 @@ const ShoppingCart = () => {
         open={isModalOpen}
         modalToggler={setIsModalOpen}
         formData={saleFormData}
-        FormComponent={() => <GenerateSaleForm totalAmount={totalAmount} onClose={() => setIsModalOpen(false)} saleDetails={saleDetails} />}
+        FormComponent={() => (
+          <GenerateSaleForm
+            totalAmount={totalAmount}
+            onClose={() => setIsModalOpen(false)}
+            saleDetails={saleDetails}
+            setCartItems={setCartItems}
+          />
+        )}
         formDataPropName="formData"
       />
     </Box>

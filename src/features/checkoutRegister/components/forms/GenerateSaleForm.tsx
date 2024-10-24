@@ -9,18 +9,22 @@ import { z } from 'zod';
 import { createSale } from '../../services/cashRegisterService';
 import { createSaleFormSchema } from '../../schema/salesSchema';
 import { useParams } from 'react-router-dom';
-import { ICashRegisterDetails, ISaleDetails } from '../../../../types/checkoutRegister/cashRegister';
+import { ICartItem, ICashRegisterDetails, ISaleDetails } from '../../../../types/checkoutRegister/cashRegister';
 import { useQueryClient } from '@tanstack/react-query';
+import { useCashRegisterStore } from '../../store/cashRegister';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 interface GenerateSaleFormProps {
   onClose: () => void;
   totalAmount: number;
   saleDetails: ISaleDetails[];
+  setCartItems: (items: ICartItem[]) => void;
 }
 
 type ISaleFormData = z.infer<ReturnType<typeof createSaleFormSchema>>;
 
-const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose, totalAmount, saleDetails }) => {
+const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose, totalAmount, saleDetails, setCartItems }) => {
   const {
     register,
     handleSubmit,
@@ -36,6 +40,7 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
     }
   });
   const { cashRegisterId } = useParams();
+  const { setCashRegister, cashRegister } = useCashRegisterStore();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -56,7 +61,40 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
           ventas: [...prevData.ventas, sale]
         };
       });
-      onClose();
+      if (cashRegister) {
+        const updatedCashRegister = {
+          ...cashRegister,
+          ventas: [...cashRegister.ventas, sale],
+          ventaTotal: cashRegister.ventaTotal + totalAmount
+        };
+
+        switch (data.paymentType) {
+          case PaymentType.Efectivo:
+            updatedCashRegister.efectivo = (cashRegister.efectivo || 0) + data.cashAmount;
+            break;
+          case PaymentType.Transferencia:
+            updatedCashRegister.transferencia = (cashRegister.transferencia || 0) + totalAmount;
+            break;
+          case PaymentType.Debito:
+            updatedCashRegister.debito = (cashRegister.debito || 0) + totalAmount;
+            break;
+          case PaymentType.Credito:
+            updatedCashRegister.credito = (cashRegister.credito || 0) + totalAmount;
+            break;
+          default:
+            break;
+        }
+        setCashRegister(updatedCashRegister);
+        setCartItems([]);
+        toast.success('Venta registrada correctamente');
+        Swal.fire({
+          title: 'Venta registrada correctamente',
+          text: 'Su cambio es de $' + Math.max(0, (watch('cashAmount') ? watch('cashAmount') : 0) - totalAmount).toFixed(2),
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        onClose();
+      }
     } catch (error) {
       console.error(error);
     }

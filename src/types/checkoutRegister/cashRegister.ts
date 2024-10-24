@@ -1,3 +1,4 @@
+import { ICake } from "../catalog/cake";
 
 export interface CashRegister {
   id_UsuarioCaja: string;  
@@ -62,4 +63,10 @@ export interface ISaleDetails {
   id_Pastel: string;
   cantidad: number;
   precioPastel: number;
+}
+
+export interface ICartItem {
+  cake: ICake;
+  quantity: number;
+  price: number;
 }

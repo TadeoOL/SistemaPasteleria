@@ -1,4 +1,4 @@
-import { ICashRegisterDetails, ICashRegisterSales, ISaleDetails } from "../../../types/checkoutRegister/cashRegister";
+import { CashRegisterWithdrawa, ICashRegisterDetails, ICashRegisterSales, ISaleDetails } from "../../../types/checkoutRegister/cashRegister";
 import { PaymentType } from "../../../types/checkoutRegister/paymentTypes";
 import axios from "../../../utils/axios";
 
@@ -49,6 +49,11 @@ export const createSale = async (data: {
 
 export const closeCashRegister = async (cashAmount: string, cashRegisterId: string): Promise<void> => {
   const response = await axios.post(`${apiUrl}/cerrar-caja/${cashRegisterId}`, { dineroCorte: cashAmount });
+  return response.data;
+};
+
+export const withdrawMoney = async (cashAmount: string, cashRegisterId: string): Promise<CashRegisterWithdrawa> => {
+  const response = await axios.post(`${apiUrl}/registrar-retiro`, { totalRetiro: cashAmount, id_Caja: cashRegisterId });
   return response.data;
 };
 

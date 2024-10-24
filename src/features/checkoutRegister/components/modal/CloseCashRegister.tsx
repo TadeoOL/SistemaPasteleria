@@ -14,7 +14,7 @@ import {
   Stack
 } from '@mui/material';
 import MainCard from '../../../../components/MainCard';
-import { ICashRegisterSales } from '../../../../types/checkoutRegister/cashRegister';
+import { CashRegisterWithdrawa, ICashRegisterSales } from '../../../../types/checkoutRegister/cashRegister';
 import { useState } from 'react';
 import { TableRow } from '@mui/material';
 import { TableCell } from '@mui/material';
@@ -27,14 +27,19 @@ import { toast } from 'react-toastify';
 import { closeCashRegister } from '../../services/cashRegisterService';
 import { useCashRegisterStore } from '../../store/cashRegister';
 import { useNavigate } from 'react-router-dom';
+import { Divider } from '@mui/material';
+
+// Generic type for the data
+type DataItem = Record<string, any>;
 
 interface CloseCashRegisterProps {
   onClose: () => void;
   sales: ICashRegisterSales[];
   cashRegisterId: string;
+  withdrawals: CashRegisterWithdrawa[];
 }
 
-export const CloseCashRegister = ({ onClose, sales, cashRegisterId }: CloseCashRegisterProps) => {
+export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals }: CloseCashRegisterProps) => {
   const salesByTypeOfPayment: Record<PaymentType, ICashRegisterSales[]> = sales.reduce((acc, sale) => {
     acc[sale.tipoPago as PaymentType] = acc[sale.tipoPago as PaymentType] || [];
     acc[sale.tipoPago as PaymentType].push(sale);
@@ -65,9 +70,11 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId }: CloseCashR
     }
     console.log('cerrar caja');
   };
+
   return (
     <>
       <DialogTitle>Cerrar caja</DialogTitle>
+      <Divider />
       <DialogContent
         sx={{
           maxHeight: 'calc(100vh - 200px)',
@@ -76,9 +83,28 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId }: CloseCashR
       >
         {sales.length > 0 &&
           Object.entries(salesByTypeOfPayment).map(([type, salesOfType]) => (
-            <CollapseTable key={type} sales={salesOfType} type={PaymentTypeLabels[type as unknown as PaymentType]} />
+            <CollapseTable<ICashRegisterSales>
+              key={type}
+              data={salesOfType}
+              type={PaymentTypeLabels[type as unknown as PaymentType]}
+              headers={['Folio', 'Monto Pago', 'Total']}
+              fields={['folio', 'montoPago', 'totalVenta']}
+            />
           ))}
-        <TotalSalesCardByType sales={salesByTypeOfPayment} cashAmount={cashAmount} handleCashAmountChange={handleCashAmountChange} />
+        {withdrawals.length > 0 && (
+          <CollapseTable<CashRegisterWithdrawa>
+            data={withdrawals}
+            type="Retiros"
+            headers={['Folio', 'Monto Total', 'Notas']}
+            fields={['folio', 'totalRetiro', 'notas']}
+          />
+        )}
+        <TotalSalesCardByType
+          sales={salesByTypeOfPayment}
+          cashAmount={cashAmount}
+          handleCashAmountChange={handleCashAmountChange}
+          withdrawals={withdrawals}
+        />
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-between' }}>
         <Button variant="outlined" onClick={onClose} color="error">
@@ -92,8 +118,16 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId }: CloseCashR
   );
 };
 
-const CollapseTable = ({ sales, type }: { sales: ICashRegisterSales[]; type: string }) => {
+interface CollapseTableProps<T extends DataItem> {
+  data: T[];
+  type: string;
+  headers: string[];
+  fields: (keyof T)[];
+}
+
+function CollapseTable<T extends DataItem>({ data, type, headers, fields }: CollapseTableProps<T>) {
   const [open, setOpen] = useState(false);
+
   return (
     <MainCard>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -109,17 +143,17 @@ const CollapseTable = ({ sales, type }: { sales: ICashRegisterSales[]; type: str
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Folio</TableCell>
-                <TableCell>Monto Pago</TableCell>
-                <TableCell>Total</TableCell>
+                {headers.map((header) => (
+                  <TableCell key={header}>{header}</TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {sales.map((sale) => (
-                <TableRow key={sale.id}>
-                  <TableCell>{sale.folio}</TableCell>
-                  <TableCell>{sale.montoPago}</TableCell>
-                  <TableCell>{sale.totalVenta}</TableCell>
+              {data.map((item, index) => (
+                <TableRow key={index}>
+                  {fields.map((field) => (
+                    <TableCell key={String(field)}>{item[field]}</TableCell>
+                  ))}
                 </TableRow>
               ))}
             </TableBody>
@@ -128,31 +162,64 @@ const CollapseTable = ({ sales, type }: { sales: ICashRegisterSales[]; type: str
       </Collapse>
     </MainCard>
   );
-};
+}
 
 const TotalSalesCardByType = ({
   sales,
   cashAmount,
-  handleCashAmountChange
+  handleCashAmountChange,
+  withdrawals
 }: {
   sales: Record<PaymentType, ICashRegisterSales[]>;
   cashAmount: string;
   handleCashAmountChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  withdrawals: CashRegisterWithdrawa[];
 }) => {
+  const totalWithdrawals = withdrawals.reduce((acc, withdrawal) => acc + withdrawal.totalRetiro, 0);
+
   return (
     <MainCard sx={{ mt: 2 }} title="Total de ventas">
       <Grid2 container spacing={2}>
         <Grid2 size={{ xs: 12, sm: 6 }}>
-          {Object.entries(sales).map(([type, salesOfType]) => (
-            <Box key={type} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography sx={{ fontSize: '1.1rem' }}>{PaymentTypeLabels[type as unknown as PaymentType]}:</Typography>
-              <Typography sx={{ fontSize: '1.1rem' }}>${salesOfType.reduce((acc, sale) => acc + sale.totalVenta, 0)}</Typography>
+          {withdrawals.length > 0 && (
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography sx={{ fontSize: '1.1rem' }}>Retiros:</Typography>
+              <Typography sx={{ fontSize: '1.1rem' }}>${totalWithdrawals.toFixed(2)}</Typography>
             </Box>
-          ))}
+          )}
+          {Object.entries(sales).map(([type, salesOfType]) => {
+            const totalSales = salesOfType.reduce((acc, sale) => acc + sale.totalVenta, 0);
+            const isEffectivo = type === PaymentType.Efectivo.toString();
+            const adjustedTotal = isEffectivo ? totalSales - totalWithdrawals : totalSales;
+
+            return (
+              <Box key={type} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography sx={{ fontSize: '1.1rem' }}>{PaymentTypeLabels[type as unknown as PaymentType]}:</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  {isEffectivo && withdrawals.length > 0 && (
+                    <Typography
+                      sx={{
+                        fontSize: '1.1rem',
+                        textDecoration: 'line-through',
+                        color: 'error.main',
+                        mr: 1
+                      }}
+                    >
+                      ${totalSales.toFixed(2)}
+                    </Typography>
+                  )}
+                  <Typography sx={{ fontSize: '1.1rem' }}>${adjustedTotal.toFixed(2)}</Typography>
+                </Box>
+              </Box>
+            );
+          })}
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography sx={{ fontSize: '1.1rem' }}>Total:</Typography>
             <Typography sx={{ fontSize: '1.1rem' }}>
-              ${Object.values(sales).reduce((acc, sale) => acc + sale.reduce((acc, sale) => acc + sale.totalVenta, 0), 0)}
+              $
+              {(
+                Object.values(sales).reduce((acc, sale) => acc + sale.reduce((acc, sale) => acc + sale.totalVenta, 0), 0) - totalWithdrawals
+              ).toFixed(2)}
             </Typography>
           </Box>
         </Grid2>

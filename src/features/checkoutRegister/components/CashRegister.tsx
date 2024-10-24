@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import GenericTable from '../../../components/third-party/react-table/GenericTable';
 import { useGetCashRegister } from '../hooks/useGetCashRegister';
@@ -15,14 +15,25 @@ import ShoppingCart from './ShoppingCart';
 import { PaymentType, PaymentTypeLabels } from '../../../types/checkoutRegister/paymentTypes';
 import GenericModal from '../../../components/GenericModal';
 import { CloseCashRegister } from './modal/CloseCashRegister';
+import { WithdrawMoney } from './modal/WithdrawMoney';
+import { useGetCakes } from '../../catalog/hooks/useGetCakes';
 
 export default function CashRegister() {
-  const { cashRegister } = useCashRegisterStore();
+  const { cashRegister, setCashRegister } = useCashRegisterStore();
   const { cashRegisterId } = useParams();
   const { data, isLoading } = useGetCashRegister((cashRegister?.id as string) || (cashRegisterId as string));
   const [selectedProduct, setSelectedProduct] = useState<ICashRegisterSales | null>(null);
   const [productModal, setProductModal] = useState(false);
   const [closeModal, setCloseModal] = useState(false);
+  const [withdrawalModal, setWithdrawalModal] = useState(false);
+  const { data: userCashRegister } = useGetCashRegister(cashRegisterId as string);
+  const { data: cakes } = useGetCakes();
+
+  useEffect(() => {
+    if (userCashRegister && !cashRegister) {
+      setCashRegister(userCashRegister);
+    }
+  }, [userCashRegister]);
 
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
@@ -79,7 +90,9 @@ export default function CashRegister() {
   return (
     <>
       <Stack sx={{ flexDirection: 'row', justifyContent: 'flex-end', mb: 2, gap: 2 }}>
-        <Button variant="contained">Retirar efectivo</Button>
+        <Button variant="contained" onClick={() => setWithdrawalModal(true)}>
+          Retirar efectivo
+        </Button>
         <Button variant="contained" onClick={() => setCloseModal(true)}>
           Cerrar caja
         </Button>
@@ -89,7 +102,7 @@ export default function CashRegister() {
           {isMobile ? (
             <>
               <Grid2 size={{ xs: 12, md: 4, lg: 3 }} sx={{ height: isMobile ? 'auto' : '100%' }}>
-                <ShoppingCart />
+                <ShoppingCart cakes={cakes} />
               </Grid2>
               <Grid2 size={{ xs: 12, md: 8, lg: 9 }} sx={{ height: isMobile ? 'auto' : '100%' }}>
                 <GenericTable<ICashRegisterSales>
@@ -104,7 +117,7 @@ export default function CashRegister() {
                     <AlertDeleteProductSold
                       open={productModal && !!selectedProduct}
                       handleClose={() => setProductModal(false)}
-                      id={selectedProduct?.id || ''}
+                      product={selectedProduct as ICashRegisterSales}
                       title={selectedProduct?.folio || ''}
                     />
                   )}
@@ -126,14 +139,14 @@ export default function CashRegister() {
                     <AlertDeleteProductSold
                       open={productModal && !!selectedProduct}
                       handleClose={() => setProductModal(false)}
-                      id={selectedProduct?.id || ''}
+                      product={selectedProduct as ICashRegisterSales}
                       title={selectedProduct?.folio || ''}
                     />
                   )}
                 />
               </Grid2>
               <Grid2 size={{ xs: 12, md: 4, lg: 3 }} sx={{ height: isMobile ? 'auto' : '100%' }}>
-                <ShoppingCart />
+                <ShoppingCart cakes={cakes} />
               </Grid2>
             </>
           )}
@@ -148,10 +161,18 @@ export default function CashRegister() {
           <CloseCashRegister
             onClose={() => setCloseModal(false)}
             sales={data?.ventas || []}
+            withdrawals={data?.retiros || []}
             cashRegisterId={cashRegister?.id || cashRegisterId || ''}
             {...props}
           />
         )}
+      />
+      <GenericModal
+        open={withdrawalModal}
+        formDataPropName="withdrawal"
+        modalToggler={setWithdrawalModal}
+        formData={null}
+        FormComponent={(props) => <WithdrawMoney onClose={() => setWithdrawalModal(false)} {...props} />}
       />
     </>
   );
