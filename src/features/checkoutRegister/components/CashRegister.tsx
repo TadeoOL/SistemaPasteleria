@@ -9,14 +9,15 @@ import { useParams } from 'react-router-dom';
 import { Box, Grid2, Stack, useMediaQuery, Theme, Button } from '@mui/material';
 import { Tooltip } from '@mui/material';
 import IconButton from '../../../components/@extended/IconButton';
-import { DeleteOutline } from '@mui/icons-material';
+import { AttachMoneyOutlined, DeleteOutline } from '@mui/icons-material';
 import AlertDeleteProductSold from './modal/AlertDeleteProductSold';
 import ShoppingCart from './ShoppingCart';
-import { PaymentType, PaymentTypeLabels } from '../../../types/checkoutRegister/paymentTypes';
+import { EstatusVenta, EstatusVentaLabels, PaymentType, PaymentTypeLabels } from '../../../types/checkoutRegister/paymentTypes';
 import GenericModal from '../../../components/GenericModal';
 import { CloseCashRegister } from './modal/CloseCashRegister';
 import { WithdrawMoney } from './modal/WithdrawMoney';
 import { useGetCakes } from '../../catalog/hooks/useGetCakes';
+import { FinishAdvance } from './modal/FinishAdvance';
 
 export default function CashRegister() {
   const { cashRegister, setCashRegister } = useCashRegisterStore();
@@ -28,6 +29,7 @@ export default function CashRegister() {
   const [withdrawalModal, setWithdrawalModal] = useState(false);
   const { data: userCashRegister } = useGetCashRegister(cashRegisterId as string);
   const { data: cakes } = useGetCakes();
+  const [finishAdvanceModal, setFinishAdvanceModal] = useState(false);
 
   useEffect(() => {
     if (userCashRegister && !cashRegister) {
@@ -36,6 +38,10 @@ export default function CashRegister() {
   }, [userCashRegister]);
 
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const handleFinishAdvance = (row: ICashRegisterSales) => {
+    setSelectedProduct(row);
+    setFinishAdvanceModal(true);
+  };
 
   const columns = useMemo<ColumnDef<ICashRegisterSales>[]>(
     () => [
@@ -53,7 +59,12 @@ export default function CashRegister() {
       {
         header: 'Tipo de Pago',
         accessorKey: 'tipoPago',
-        cell: ({ row }) => PaymentTypeLabels[row.original.tipoPago as PaymentType] || 'Desconocido'
+        cell: ({ row }) => PaymentTypeLabels[row.original.tipoPago as PaymentType] || (row.original.esAnticipo ? 'Anticipo' : 'Desconocido')
+      },
+      {
+        header: 'Estatus',
+        accessorKey: 'estatus',
+        cell: ({ row }) => EstatusVentaLabels[row.original.estatus as EstatusVenta]
       },
       {
         header: 'Monto Pago',
@@ -67,6 +78,13 @@ export default function CashRegister() {
         header: 'Acciones',
         cell: ({ row }) => (
           <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+            {row.original.esAnticipo && row.original.estatus !== EstatusVenta.VentaAnticipoCompletada && (
+              <Tooltip title="Pagar">
+                <IconButton color="primary" onClick={() => handleFinishAdvance(row.original)}>
+                  <AttachMoneyOutlined />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Cancelar">
               <IconButton
                 color="primary"
@@ -173,6 +191,15 @@ export default function CashRegister() {
         modalToggler={setWithdrawalModal}
         formData={null}
         FormComponent={(props) => <WithdrawMoney onClose={() => setWithdrawalModal(false)} {...props} />}
+      />
+      <GenericModal
+        open={finishAdvanceModal}
+        modalToggler={setFinishAdvanceModal}
+        formData={null}
+        formDataPropName="finishAdvance"
+        FormComponent={(props) => (
+          <FinishAdvance onClose={() => setFinishAdvanceModal(false)} saleSelected={selectedProduct as ICashRegisterSales} {...props} />
+        )}
       />
     </>
   );

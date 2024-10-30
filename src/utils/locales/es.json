@@ -149,5 +149,6 @@
   "inventory-cakes": "Inventario de pasteles",
   "checkout-register": "Registro de ventas",
   "checkout-products": "Ventas de productos",
-  "checkout-sales": "Ventas"
+  "checkout-sales": "Ventas",
+  "requests-products": "Solicitudes"
 }

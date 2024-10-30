@@ -31,7 +31,8 @@ const ShoppingCart = ({ cakes }: { cakes: ICake[] }) => {
       cartItems.map((item) => ({
         id_Pastel: item.cake.id,
         cantidad: item.quantity,
-        precioPastel: item.price
+        precioPastel: item.price,
+        pastel: item.cake.nombre
       })),
     [cartItems]
   );

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, DialogActions, DialogContent, Divider } from '@mui/material';
+import { Button, DialogActions, DialogContent, Divider, Switch, FormControlLabel } from '@mui/material';
 import { DialogTitle } from '@mui/material';
 import { TextField, Select, MenuItem, FormControl, InputLabel, Typography, Box } from '@mui/material';
 import { PaymentType, PaymentTypeLabels } from '../../../../types/checkoutRegister/paymentTypes';
@@ -36,7 +36,8 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
     defaultValues: {
       paymentType: PaymentType.Efectivo,
       cashAmount: 0,
-      notes: ''
+      notes: '',
+      isAdvancePayment: false
     }
   });
   const { cashRegisterId } = useParams();
@@ -54,7 +55,13 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
 
   const onSubmit: SubmitHandler<ISaleFormData> = async (data) => {
     try {
-      const sale = await createSale({ ...data, totalAmount, cashRegisterId: cashRegisterId as string, saleDetails: saleDetails });
+      const sale = await createSale({
+        ...data,
+        totalAmount,
+        cashRegisterId: cashRegisterId as string,
+        saleDetails: saleDetails,
+        isAdvancePayment: data.isAdvancePayment
+      });
       queryClient.setQueryData(['cashRegister', cashRegisterId], (prevData: ICashRegisterDetails) => {
         return {
           ...prevData,
@@ -100,6 +107,9 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
     }
   };
 
+  const isAdvancePayment = watch('isAdvancePayment');
+  const paymentType = watch('paymentType');
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -109,9 +119,10 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
           <Typography variant="h6" gutterBottom>
             Total de la venta: ${totalAmount.toFixed(2)}
           </Typography>
+          <FormControlLabel control={<Switch {...register('isAdvancePayment')} />} label="Anticipo" />
           <FormControl fullWidth margin="normal">
             <InputLabel>Tipo de Pago</InputLabel>
-            <Select value={watch('paymentType')} {...register('paymentType')}>
+            <Select value={paymentType} {...register('paymentType')}>
               {Object.values(PaymentType)
                 .filter((value) => typeof value === 'number')
                 .map((value) => (
@@ -121,10 +132,10 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
                 ))}
             </Select>
           </FormControl>
-          {watch('paymentType') === PaymentType.Efectivo && (
+          {(isAdvancePayment || paymentType === PaymentType.Efectivo) && (
             <TextField
               fullWidth
-              label="Monto en Efectivo"
+              label={isAdvancePayment ? 'Monto del Anticipo' : 'Monto en Efectivo'}
               type="number"
               error={!!errors.cashAmount}
               helperText={errors.cashAmount?.message}
@@ -145,7 +156,7 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
             />
           )}
           <TextField fullWidth label="Notas" multiline rows={3} {...register('notes')} margin="normal" />
-          {watch('paymentType') === PaymentType.Efectivo && watch('cashAmount') !== null && (
+          {!isAdvancePayment && paymentType === PaymentType.Efectivo && watch('cashAmount') !== null && (
             <Box mt={2}>
               <Typography>Cambio: ${Math.max(0, (watch('cashAmount') ? watch('cashAmount') : 0) - totalAmount).toFixed(2)}</Typography>
             </Box>

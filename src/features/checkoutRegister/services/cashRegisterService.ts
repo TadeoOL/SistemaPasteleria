@@ -35,6 +35,7 @@ export const createSale = async (data: {
   totalAmount: number;
   cashRegisterId: string;
   saleDetails: ISaleDetails[];
+  isAdvancePayment: boolean;
 }): Promise<ICashRegisterSales> => {
   const response = await axios.post(`${apiUrl}/registrar-venta`, {
     tipoPago: data.paymentType,
@@ -42,7 +43,8 @@ export const createSale = async (data: {
     totalVenta: data.totalAmount,
     notas: data.notes,
     id_Caja: data.cashRegisterId,
-    detalleVentas: data.saleDetails
+    detalleVentas: data.saleDetails,
+    esAnticipo: data.isAdvancePayment
   });
   return response.data;
 };
@@ -54,6 +56,16 @@ export const closeCashRegister = async (cashAmount: string, cashRegisterId: stri
 
 export const withdrawMoney = async (cashAmount: string, cashRegisterId: string): Promise<CashRegisterWithdrawa> => {
   const response = await axios.post(`${apiUrl}/registrar-retiro`, { totalRetiro: cashAmount, id_Caja: cashRegisterId });
+  return response.data;
+};
+
+export const finishAdvance = async (data: {
+  cashRegisterId: string;
+  saleId: string;
+  cashAmount: number;
+  paymentType: PaymentType;
+}): Promise<ICashRegisterSales> => {
+  const response = await axios.post(`${apiUrl}/liquidar-anticipo`, { id_Caja: data.cashRegisterId, id_CajaVenta: data.saleId, montoPago: data.cashAmount, tipoPago: data.paymentType });
   return response.data;
 };
 

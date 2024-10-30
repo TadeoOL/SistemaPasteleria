@@ -1,25 +1,8 @@
-import {
-  Box,
-  Button,
-  Collapse,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Table,
-  TableContainer,
-  TableHead,
-  Typography,
-  Grid2,
-  TextField,
-  Stack
-} from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography, Grid2, TextField, Stack } from '@mui/material';
 import MainCard from '../../../../components/MainCard';
 import { CashRegisterWithdrawa, ICashRegisterSales } from '../../../../types/checkoutRegister/cashRegister';
 import { useState } from 'react';
-import { TableRow } from '@mui/material';
-import { TableCell } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { TableBody } from '@mui/material';
+import GenericCollapseTable from '../../../../components/GenericCollapseTable';
 import { PaymentType, PaymentTypeLabels } from '../../../../types/checkoutRegister/paymentTypes';
 import React from 'react';
 import { InputAdornment } from '@mui/material';
@@ -30,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { Divider } from '@mui/material';
 
 // Generic type for the data
-type DataItem = Record<string, any>;
 
 interface CloseCashRegisterProps {
   onClose: () => void;
@@ -83,16 +65,16 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
       >
         {sales.length > 0 &&
           Object.entries(salesByTypeOfPayment).map(([type, salesOfType]) => (
-            <CollapseTable<ICashRegisterSales>
+            <GenericCollapseTable<ICashRegisterSales>
               key={type}
               data={salesOfType}
-              type={PaymentTypeLabels[type as unknown as PaymentType]}
+              type={PaymentTypeLabels[type as unknown as PaymentType] || 'Anticipo'}
               headers={['Folio', 'Monto Pago', 'Total']}
               fields={['folio', 'montoPago', 'totalVenta']}
             />
           ))}
         {withdrawals.length > 0 && (
-          <CollapseTable<CashRegisterWithdrawa>
+          <GenericCollapseTable<CashRegisterWithdrawa>
             data={withdrawals}
             type="Retiros"
             headers={['Folio', 'Monto Total', 'Notas']}
@@ -117,52 +99,6 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
     </>
   );
 };
-
-interface CollapseTableProps<T extends DataItem> {
-  data: T[];
-  type: string;
-  headers: string[];
-  fields: (keyof T)[];
-}
-
-function CollapseTable<T extends DataItem>({ data, type, headers, fields }: CollapseTableProps<T>) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <MainCard>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        {open ? (
-          <ExpandLess onClick={() => setOpen(!open)} aria-expanded={open} aria-label="show less" />
-        ) : (
-          <ExpandMore onClick={() => setOpen(!open)} aria-expanded={open} aria-label="show more" />
-        )}
-        <Typography sx={{ fontWeight: 'bold' }}>{type}</Typography>
-      </Box>
-      <Collapse in={open}>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {headers.map((header) => (
-                  <TableCell key={header}>{header}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((item, index) => (
-                <TableRow key={index}>
-                  {fields.map((field) => (
-                    <TableCell key={String(field)}>{item[field]}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Collapse>
-    </MainCard>
-  );
-}
 
 const TotalSalesCardByType = ({
   sales,
@@ -194,7 +130,7 @@ const TotalSalesCardByType = ({
 
             return (
               <Box key={type} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography sx={{ fontSize: '1.1rem' }}>{PaymentTypeLabels[type as unknown as PaymentType]}:</Typography>
+                <Typography sx={{ fontSize: '1.1rem' }}>{PaymentTypeLabels[type as unknown as PaymentType] || 'Anticipo'}:</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   {isEffectivo && withdrawals.length > 0 && (
                     <Typography

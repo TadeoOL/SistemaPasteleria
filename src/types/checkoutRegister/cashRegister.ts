@@ -27,11 +27,14 @@ export interface ICashRegisterSales {
     tipoPago: number;
     notas?: string | null;
     caja?: CashRegister | null;
-    ventaDetalles?: any[] | null;
+    detalleVentas?: any[] | null;
     id: string; 
     fechaCreacion?: string;
     fechaModificacion?: string;
     habilitado?: boolean;
+    anticipoDetalles?: ICashRegisterAdvance[];
+    esAnticipo: boolean;
+    estatus: number;
   }
 
 export interface CashRegisterWithdrawa {
@@ -63,10 +66,18 @@ export interface ISaleDetails {
   id_Pastel: string;
   cantidad: number;
   precioPastel: number;
+  pastel?: string;
 }
 
 export interface ICartItem {
   cake: ICake;
   quantity: number;
   price: number;
+}
+
+export interface ICashRegisterAdvance {
+  id_Usuario: string;
+  usuario: string
+  totalAnticipo: number;
+  tipoPago: number;
 }

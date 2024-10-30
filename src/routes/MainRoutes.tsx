@@ -14,7 +14,8 @@ const InventoryProductsView = Loadable(lazy(() => import('../features/inventoryM
 const InventoryCakesView = Loadable(lazy(() => import('../features/inventoryManagment/components/cake/InventoryCakes')));
 const CheckoutRegister = Loadable(lazy(() => import('../features/checkoutRegister/screens/CheckoutRegister')));
 const Sales = Loadable(lazy(() => import('../features/checkoutRegister/components/CashRegister')));
-
+const RequestsView = Loadable(lazy(() => import('../features/request/components/Request')));
+const RequestScreen = Loadable(lazy(() => import('../features/request/screens/RequestView')));
 const MainRoutes = {
   path: '/',
   children: [
@@ -76,6 +77,19 @@ const MainRoutes = {
             {
               path: 'pasteles/:warehouseId',
               element: <InventoryCakesView />
+            }
+          ]
+        },
+        {
+          path: 'solicitudes',
+          children: [
+            {
+              path: '',
+              element: <RequestScreen />
+            },
+            {
+              path: ':branchId',
+              element: <RequestsView />
             }
           ]
         }

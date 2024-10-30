@@ -48,7 +48,7 @@ export const WithdrawMoney = ({ onClose }: { onClose: () => void }) => {
       toast.error('Error al registrar el retiro');
     }
   };
-
+  console.log({ cashRegister });
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
