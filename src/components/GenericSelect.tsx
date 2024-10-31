@@ -11,11 +11,12 @@ interface GenericSelectProps<T, TOption> {
   getOptionLabel: (option: TOption) => string;
   getOptionValue: (option: TOption) => any;
   isLoading?: boolean;
+  multiple?: boolean;
 }
 
 const GenericSelect = forwardRef(
   <T extends FieldValues, TOption>(
-    { label, name, control, options, getOptionLabel, getOptionValue, isLoading }: GenericSelectProps<T, TOption>,
+    { label, name, control, options, getOptionLabel, getOptionValue, isLoading, multiple = false }: GenericSelectProps<T, TOption>,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -25,7 +26,19 @@ const GenericSelect = forwardRef(
           control={control}
           disabled={isLoading}
           render={({ field, fieldState }) => (
-            <TextField select label={label} {...field} inputRef={ref} error={!!fieldState.error} helperText={fieldState.error?.message}>
+            <TextField
+              select
+              label={label}
+              {...field}
+              inputRef={ref}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+              slotProps={{
+                select: {
+                  multiple: multiple
+                }
+              }}
+            >
               {isLoading ? (
                 <MenuItem>
                   <i>Cargando...</i>

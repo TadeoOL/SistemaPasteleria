@@ -150,5 +150,6 @@
   "checkout-register": "Registro de ventas",
   "checkout-products": "Ventas de productos",
   "checkout-sales": "Ventas",
-  "requests-products": "Solicitudes"
+  "requests-products": "Solicitudes",
+  "users": "Usuarios"
 }

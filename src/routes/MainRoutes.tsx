@@ -16,6 +16,8 @@ const CheckoutRegister = Loadable(lazy(() => import('../features/checkoutRegiste
 const Sales = Loadable(lazy(() => import('../features/checkoutRegister/components/CashRegister')));
 const RequestsView = Loadable(lazy(() => import('../features/request/components/Request')));
 const RequestScreen = Loadable(lazy(() => import('../features/request/screens/RequestView')));
+const Users = Loadable(lazy(() => import('../features/users/components/Users')));
+
 const MainRoutes = {
   path: '/',
   children: [
@@ -92,6 +94,10 @@ const MainRoutes = {
               element: <RequestsView />
             }
           ]
+        },
+        {
+          path: 'usuarios',
+          element: <Users />
         }
       ]
     }

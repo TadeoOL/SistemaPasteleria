@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { useQueryClient } from '@tanstack/react-query';
 import { RequestStatus, RequestStatusLabels } from '../../../types/request/requstTypes';
 import { RequestCompleteForm } from './modal/RequestCompleteForm';
+import { useAuthStore } from '../../auth/store/authStore';
 
 const Request = () => {
   const { branchId } = useParams();
@@ -25,6 +26,7 @@ const Request = () => {
   const [requestSelected, setRequestSelected] = useState<IRequest | null>(null);
   const [openComplete, setOpenComplete] = useState(false);
   const queryClient = useQueryClient();
+  const profile = useAuthStore((state) => state.profile);
 
   const handleCancelRequest = async (request: IRequest) => {
     Swal.fire({
@@ -108,7 +110,7 @@ const Request = () => {
                 <VisibilityOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
-            {row.original.estatus === RequestStatus.Creada && (
+            {row.original.estatus === RequestStatus.Creada && profile?.roles.includes('ADMIN') && (
               <>
                 <Tooltip title="Aceptar">
                   <IconButton
@@ -138,17 +140,19 @@ const Request = () => {
   if (isLoading) return <Loader />;
   return (
     <>
-      <Stack direction="row" justifyContent="flex-end" alignItems="center" mb={1}>
-        <Button variant="contained" startIcon={<AddCircleOutlineOutlined />} onClick={() => setOpen(true)}>
-          Crear solicitud
-        </Button>
-      </Stack>
+      {profile?.roles.includes('ADMIN') && (
+        <Stack direction="row" justifyContent="flex-end" alignItems="center" mb={1}>
+          <Button variant="contained" startIcon={<AddCircleOutlineOutlined />} onClick={() => setOpen(true)}>
+            Crear solicitud
+          </Button>
+        </Stack>
+      )}
       <GenericTable<IRequest> data={data} columns={columns} title="Solicitudes" />
       <GenericModal<IRequest>
         FormComponent={(props) => <RequestForm onClose={props.closeModal} />}
         formDataPropName="request"
         formData={null}
-        open={open}
+        open={open && profile?.roles.includes('ADMIN')}
         modalToggler={() => setOpen(false)}
       />
       <GenericModal<IRequest>
@@ -164,7 +168,7 @@ const Request = () => {
         FormComponent={(props) => <RequestCompleteForm onClose={props.closeModal} request={props.request} />}
         formDataPropName="request"
         formData={requestSelected}
-        open={openComplete}
+        open={openComplete && profile?.roles.includes('ADMIN')}
         modalToggler={() => setOpenComplete(false)}
       />
     </>
