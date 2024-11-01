@@ -15,6 +15,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import GenericSelect from '../../../../components/GenericSelect';
 import { useParams } from 'react-router-dom';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 interface RequestCompleteFormProps {
   onClose: () => void;
@@ -32,7 +33,12 @@ export const RequestCompleteForm = ({ onClose, request }: RequestCompleteFormPro
   const queryClient = useQueryClient();
   const { branchId } = useParams();
 
-  const { register, handleSubmit, control } = useForm<Schema>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { isSubmitting }
+  } = useForm<Schema>({
     defaultValues: {
       id_Almacen: ''
     },
@@ -122,12 +128,12 @@ export const RequestCompleteForm = ({ onClose, request }: RequestCompleteFormPro
           </Stack>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button onClick={onClose} color="error" variant="outlined">
+          <Button onClick={onClose} color="error" variant="outlined" disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <LoadingButton variant="contained" type="submit" loading={isSubmitting} loadingPosition="end">
             Completar
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </>

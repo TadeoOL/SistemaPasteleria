@@ -1,4 +1,4 @@
-import { Box, DialogContent, FormHelperText, MenuItem, Select, Stack, TextField, Tooltip } from '@mui/material';
+import { Autocomplete, Box, DialogContent, FormHelperText, Stack, TextField, Tooltip } from '@mui/material';
 import { Divider } from '@mui/material';
 import { Button } from '@mui/material';
 import { DialogActions } from '@mui/material';
@@ -7,7 +7,6 @@ import { useGetBranches } from '../../../catalog/hooks/useGetBranches';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IRequestSchema, requestSchema } from '../../schema/requestSchema';
-import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { useGetCakes } from '../../../catalog/hooks/useGetCakes';
 import { useGetProducts } from '../../../catalog/hooks/useGetProducts';
@@ -22,6 +21,7 @@ import { IBranch } from '../../../../types/catalog/branch';
 import { useQueryClient } from '@tanstack/react-query';
 import { IRequest } from '../../../../types/request/request';
 import GenericSelect from '../../../../components/GenericSelect';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 interface RequestFormProps {
   onClose: () => void;
@@ -37,7 +37,7 @@ export const RequestForm = ({ onClose }: RequestFormProps) => {
     setValue,
     watch,
     control,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<IRequestSchema>({
     resolver: zodResolver(requestSchema),
     defaultValues: {
@@ -50,8 +50,8 @@ export const RequestForm = ({ onClose }: RequestFormProps) => {
   const cakesSelected = watch('pasteles');
   const productsSelected = watch('productos');
 
-  const [currentCake, setCurrentCake] = useState('');
-  const [currentProduct, setCurrentProduct] = useState('');
+  const [currentCake, setCurrentCake] = useState<{ label: string; value: string } | null>(null);
+  const [currentProduct, setCurrentProduct] = useState<{ label: string; value: string } | null>(null);
   const [quantityCake, setQuantityCake] = useState<string>('1');
   const [quantityProduct, setQuantityProduct] = useState<string>('1');
 
@@ -62,21 +62,21 @@ export const RequestForm = ({ onClose }: RequestFormProps) => {
   const isEditing = isEditingCakes || isEditingProducts;
 
   const handleAddCake = () => {
-    const cake = cakes?.find((c) => c.id === currentCake);
+    const cake = cakes?.find((c) => c.id === currentCake?.value);
     const quantity = Number(quantityCake);
     if (cake && quantity > 0) {
       setValue('pasteles', [...(cakesSelected ?? []), { id_Pastel: cake.id, cantidad: quantity, nombre: cake.nombre }]);
-      setCurrentCake('');
+      setCurrentCake(null);
       setQuantityCake('1');
     }
   };
 
   const handleAddProduct = () => {
-    const product = products?.find((p) => p.id === currentProduct);
+    const product = products?.find((p) => p.id === currentProduct?.value);
     const quantity = Number(quantityProduct);
     if (product && quantity > 0) {
       setValue('productos', [...(productsSelected ?? []), { id_Producto: product.id, cantidad: quantity, nombre: product.nombre }]);
-      setCurrentProduct('');
+      setCurrentProduct(null);
       setQuantityProduct('1');
     }
   };
@@ -144,17 +144,16 @@ export const RequestForm = ({ onClose }: RequestFormProps) => {
             />
             <Divider textAlign="center">Pasteles</Divider>
             <FormControl fullWidth>
-              <InputLabel htmlFor="cakes-select">Pasteles</InputLabel>
               <Stack spacing={2}>
-                <Select id="cakes-select" value={currentCake} onChange={(e) => setCurrentCake(e.target.value)} error={!!errors.pasteles}>
-                  {cakes
+                <Autocomplete
+                  id="cakes-select"
+                  value={currentCake}
+                  onChange={(_, newValue) => setCurrentCake(newValue)}
+                  options={cakes
                     ?.filter((cake) => !cakesSelected.find((c) => c.id_Pastel === cake.id))
-                    .map((cake) => (
-                      <MenuItem key={cake.id} value={cake.id}>
-                        {cake.nombre}
-                      </MenuItem>
-                    ))}
-                </Select>
+                    .map((cake) => ({ label: cake.nombre, value: cake.id }))}
+                  renderInput={(params) => <TextField {...params} label="Pasteles" />}
+                />
                 {errors.pasteles && <FormHelperText error>{errors.pasteles.message}</FormHelperText>}
                 <Stack direction="row" spacing={2}>
                   <TextField
@@ -201,22 +200,16 @@ export const RequestForm = ({ onClose }: RequestFormProps) => {
             <Divider textAlign="center">Productos</Divider>
 
             <FormControl fullWidth>
-              <InputLabel htmlFor="products-select">Productos</InputLabel>
               <Stack spacing={2}>
-                <Select
+                <Autocomplete
                   id="products-select"
                   value={currentProduct}
-                  onChange={(e) => setCurrentProduct(e.target.value)}
-                  error={!!errors.productos}
-                >
-                  {products
+                  onChange={(_, newValue) => setCurrentProduct(newValue)}
+                  options={products
                     ?.filter((product) => !productsSelected.find((p) => p.id_Producto === product.id))
-                    .map((product) => (
-                      <MenuItem key={product.id} value={product.id}>
-                        {product.nombre}
-                      </MenuItem>
-                    ))}
-                </Select>
+                    .map((product) => ({ label: product.nombre, value: product.id }))}
+                  renderInput={(params) => <TextField {...params} label="Productos" />}
+                />
                 {errors.productos && <FormHelperText error>{errors.productos.message}</FormHelperText>}
                 <Stack direction="row" spacing={2}>
                   <TextField
@@ -262,12 +255,12 @@ export const RequestForm = ({ onClose }: RequestFormProps) => {
           </Stack>
         </DialogContent>
         <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Button variant="outlined" color="error" onClick={onClose}>
+          <Button variant="outlined" color="error" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit" disabled={isEditing}>
+          <LoadingButton variant="contained" type="submit" loading={isSubmitting} disabled={isEditing} loadingPosition="end">
             Crear
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </>

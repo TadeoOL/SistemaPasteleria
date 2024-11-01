@@ -1,4 +1,5 @@
 import { ICake } from "../catalog/cake";
+import { IUser } from "../users/user";
 
 export interface CashRegister {
   id_UsuarioCaja: string;  

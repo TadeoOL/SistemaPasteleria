@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { IUserDto } from '../../../../types/users/user';
 import CircularWithPath from '../../../../components/@extended/progress/CircularWithPath';
 import { useQueryClient } from '@tanstack/react-query';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 interface AddUserFormProps {
   onClose: () => void;
@@ -26,7 +27,11 @@ export const AddUserForm = ({ onClose, user, isEdit = false }: AddUserFormProps)
   const { data: roles, isLoading } = useGetRoles();
   const queryClient = useQueryClient();
   const { data: branches, isLoading: isLoadingBranches } = useGetBranches();
-  const { control, handleSubmit } = useForm<AddUserSchema>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm<AddUserSchema>({
     defaultValues: {
       id: user?.id || undefined,
       roles: user?.roles || [],
@@ -143,12 +148,12 @@ export const AddUserForm = ({ onClose, user, isEdit = false }: AddUserFormProps)
           </Grid2>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button variant="outlined" color="error" onClick={onClose}>
+          <Button variant="outlined" color="error" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <LoadingButton variant="contained" type="submit" loading={isSubmitting} loadingPosition="end">
             {isEdit ? 'Editar' : 'Agregar'}
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </>

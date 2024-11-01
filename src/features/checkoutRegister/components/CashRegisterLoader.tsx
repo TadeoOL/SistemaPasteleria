@@ -1,8 +1,11 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
 import { PointOfSaleOutlined } from '@mui/icons-material';
 
-const CashRegisterLoader: React.FC = () => {
+interface CashRegisterLoaderProps {
+  message?: string;
+  icon?: React.ReactNode;
+}
+const CashRegisterLoader = ({ message, icon }: CashRegisterLoaderProps) => {
   return (
     <Box
       display="flex"
@@ -31,9 +34,9 @@ const CashRegisterLoader: React.FC = () => {
         }
       }}
     >
-      <PointOfSaleOutlined className="breathing" sx={{ fontSize: 80, color: 'primary.main', mb: 2 }} />
+      {icon || <PointOfSaleOutlined className="breathing" sx={{ fontSize: 80, color: 'primary.main', mb: 2 }} />}
       <Typography variant="h4" color="primary" fontWeight="bold" textAlign="center">
-        Verificando caja...
+        {message || 'Verificando caja...'}
       </Typography>
     </Box>
   );

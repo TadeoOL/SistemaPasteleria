@@ -14,6 +14,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCashRegisterStore } from '../../store/cashRegister';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 interface GenerateSaleFormProps {
   onClose: () => void;
@@ -30,7 +31,7 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
     handleSubmit,
     watch,
     setValue,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<ISaleFormData>({
     resolver: zodResolver(createSaleFormSchema(totalAmount)),
     defaultValues: {
@@ -63,15 +64,21 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
         isAdvancePayment: data.isAdvancePayment
       });
       queryClient.setQueryData(['cashRegister', cashRegisterId], (prevData: ICashRegisterDetails) => {
+        if (prevData.ventas.length > 0) {
+          return {
+            ...prevData,
+            ventas: [...prevData.ventas, { ...sale, estatus: 2 }]
+          };
+        }
         return {
           ...prevData,
-          ventas: [...prevData.ventas, sale]
+          ventas: [{ ...sale, estatus: 2 }]
         };
       });
       if (cashRegister) {
         const updatedCashRegister = {
           ...cashRegister,
-          ventas: [...cashRegister.ventas, sale],
+          ventas: [...cashRegister.ventas, { ...sale, estatus: 2 }],
           ventaTotal: cashRegister.ventaTotal + totalAmount
         };
 
@@ -163,12 +170,12 @@ const GenerateSaleForm: React.FC<GenerateSaleFormProps> = React.memo(({ onClose,
           )}
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button variant="outlined" color="error" onClick={onClose}>
+          <Button variant="outlined" color="error" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <LoadingButton variant="contained" type="submit" loading={isSubmitting} loadingPosition="end">
             Generar Venta
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </>

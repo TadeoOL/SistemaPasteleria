@@ -8,6 +8,7 @@ import { withdrawMoney } from '../../services/cashRegisterService';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { ICashRegisterDetails } from '../../../../types/checkoutRegister/cashRegister';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 export const WithdrawMoney = ({ onClose }: { onClose: () => void }) => {
   const { cashRegister, setCashRegister } = useCashRegisterStore();
@@ -95,9 +96,9 @@ export const WithdrawMoney = ({ onClose }: { onClose: () => void }) => {
           <Button variant="outlined" color="error" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit" disabled={isSubmitting}>
+          <LoadingButton variant="contained" type="submit" loading={isSubmitting} loadingPosition="end">
             Retirar
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </>

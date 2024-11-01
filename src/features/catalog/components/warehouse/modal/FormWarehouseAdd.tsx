@@ -44,6 +44,7 @@ import { insertWarehouse } from '../../../services/warehouseService';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { IBranch } from '../../../../../types/catalog/branch';
+import LoadingButton from '../../../../../components/@extended/LoadingButton';
 
 // constant
 const getInitialValues = (warehouse: IWarehouse | null) => {
@@ -240,12 +241,12 @@ const FormWarehouseAdd: React.FC<FormWarehouseAddProps> = ({ warehouse, closeMod
               </Grid2>
               <Grid2 size={{ xs: 6 }} container justifyContent="flex-end">
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Button color="error" onClick={closeModal}>
+                  <Button color="error" onClick={closeModal} disabled={isSubmitting}>
                     Cancelar
                   </Button>
-                  <Button type="submit" variant="contained" disabled={isSubmitting}>
+                  <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingPosition="end">
                     {warehouse ? 'Editar' : 'Agregar'}
-                  </Button>
+                  </LoadingButton>
                 </Stack>
               </Grid2>
             </Grid2>

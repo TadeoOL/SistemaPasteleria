@@ -6,16 +6,26 @@ import { WarehouseSelector } from '../components/modal/WarehouseSelector';
 import useWarehouseSelectedStore from '../store/warehouseSelected';
 import { useAuthStore } from '../../auth/store/authStore';
 import { useGetWarehousesByBranch } from '../../catalog/hooks/useGetWarehousesByBranch';
+import CashRegisterLoader from '../../checkoutRegister/components/CashRegisterLoader';
+import { InventoryOutlined } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 export const InventoryManagment = () => {
   const [openWarehouseSelector, setOpenWarehouseSelector] = useState(false);
   const { warehouse: selectedWarehouse, setWarehouse } = useWarehouseSelectedStore();
   const profile = useAuthStore((state) => state.profile);
-  const { data: warehouses, isLoading: isLoadingWarehouses } = useGetWarehousesByBranch(profile?.id_Sucursal as string);
+
   const navigate = useNavigate();
   const { warehouseId } = useParams();
   const location = useLocation();
   const isProducts = location.pathname.includes('productos');
+
+  if (!profile.id_Sucursal) {
+    toast.error('No tienes ninguna sucursal asignada');
+    navigate('/');
+  }
+
+  const { data: warehouses, isLoading: isLoadingWarehouses } = useGetWarehousesByBranch(profile?.id_Sucursal as string);
 
   useEffect(() => {
     if (isLoadingWarehouses) return;
@@ -47,11 +57,19 @@ export const InventoryManagment = () => {
     navigate('/inventario/pasteles/:warehouseId');
   };
 
+  if (isLoadingWarehouses)
+    return (
+      <CashRegisterLoader
+        message="Cargando almacenes..."
+        icon={<InventoryOutlined sx={{ fontSize: 80, color: 'primary.main', mb: 2 }} />}
+      />
+    );
+
   return (
     <>
       <GenericModal
         open={openWarehouseSelector}
-        modalToggler={handleCloseWarehouseSelector}
+        modalToggler={() => {}}
         formData={null}
         FormComponent={() => (
           <WarehouseSelector
@@ -64,11 +82,11 @@ export const InventoryManagment = () => {
       />
       <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
         <Typography variant="h6" sx={{ alignSelf: 'flex-end', fontWeight: 'bold' }}>
-          Almacen Actual: {selectedWarehouse?.nombre}
+          Almacén Actual: {selectedWarehouse?.nombre}
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
           <Button variant="contained" color="error" onClick={handleChangeWarehouse}>
-            Cambiar Almacen
+            Cambiar Almacén
           </Button>
         </Box>
       </Stack>

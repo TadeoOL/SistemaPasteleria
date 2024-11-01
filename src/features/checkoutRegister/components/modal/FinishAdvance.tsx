@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { finishAdvance } from '../../services/cashRegisterService';
 import Swal from 'sweetalert2';
 import { useQueryClient } from '@tanstack/react-query';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 export const FinishAdvance = ({ onClose, saleSelected }: { onClose: () => void; saleSelected: ICashRegisterSales }) => {
   const totalAnticipo = saleSelected.anticipoDetalles?.flatMap((detail) => detail.totalAnticipo).reduce((acc, curr) => acc + curr, 0);
@@ -24,7 +25,7 @@ export const FinishAdvance = ({ onClose, saleSelected }: { onClose: () => void; 
     watch,
     setValue,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<IFinishAdvanceFormData>({
     resolver: zodResolver(createFinishAdvanceFormSchema(totalRestante)),
     defaultValues: {
@@ -81,6 +82,7 @@ export const FinishAdvance = ({ onClose, saleSelected }: { onClose: () => void; 
             type="Pasteles"
             headers={['Nombre', 'Cantidad', 'Precio Unitario', 'Total']}
             fields={['pastel', 'cantidad', 'precioPastel', 'total']}
+            idField="id_Pastel"
           />
 
           <FormControl fullWidth margin="normal">
@@ -131,12 +133,12 @@ export const FinishAdvance = ({ onClose, saleSelected }: { onClose: () => void; 
           <Typography variant="body2">Total venta: ${saleSelected.totalVenta.toFixed(2)}</Typography>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button variant="outlined" color="error" onClick={onClose}>
+          <Button variant="outlined" color="error" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <LoadingButton variant="contained" type="submit" loading={isSubmitting} loadingPosition="end">
             Finalizar
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </>

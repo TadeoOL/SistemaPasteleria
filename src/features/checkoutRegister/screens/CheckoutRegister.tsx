@@ -27,6 +27,8 @@ const CheckoutRegister = () => {
           }
         } catch (error) {
           console.error('Error al obtener la caja del usuario:', error);
+          toast.error('Error al obtener la caja del usuario');
+          navigate('/catalogo/almacenes');
           // Manejar el error, tal vez redirigir a una página de error
         } finally {
           setIsLoading(false);

@@ -11,6 +11,7 @@ import { closeCashRegister } from '../../services/cashRegisterService';
 import { useCashRegisterStore } from '../../store/cashRegister';
 import { useNavigate } from 'react-router-dom';
 import { Divider } from '@mui/material';
+import LoadingButton from '../../../../components/@extended/LoadingButton';
 
 // Generic type for the data
 
@@ -28,6 +29,7 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
     return acc;
   }, {} as Record<PaymentType, ICashRegisterSales[]>);
   const [cashAmount, setCashAmount] = useState('');
+  const [isClosingCashRegister, setIsClosingCashRegister] = useState(false);
   const setCashRegister = useCashRegisterStore((state) => state.setCashRegister);
   const navigate = useNavigate();
 
@@ -40,6 +42,7 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
       toast.error('El monto en caja no puede ser 0 o negativo');
       return;
     }
+    setIsClosingCashRegister(true);
     try {
       await closeCashRegister(cashAmount, cashRegisterId);
       toast.success('Caja cerrada correctamente');
@@ -49,6 +52,8 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
     } catch (error) {
       toast.error('Error al cerrar caja');
       console.error(error);
+    } finally {
+      setIsClosingCashRegister(false);
     }
     console.log('cerrar caja');
   };
@@ -71,6 +76,7 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
               type={PaymentTypeLabels[type as unknown as PaymentType] || 'Anticipo'}
               headers={['Folio', 'Monto Pago', 'Total']}
               fields={['folio', 'montoPago', 'totalVenta']}
+              idField="id"
             />
           ))}
         {withdrawals.length > 0 && (
@@ -79,6 +85,7 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
             type="Retiros"
             headers={['Folio', 'Monto Total', 'Notas']}
             fields={['folio', 'totalRetiro', 'notas']}
+            idField="id"
           />
         )}
         <TotalSalesCardByType
@@ -89,12 +96,12 @@ export const CloseCashRegister = ({ onClose, sales, cashRegisterId, withdrawals 
         />
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-between' }}>
-        <Button variant="outlined" onClick={onClose} color="error">
+        <Button variant="outlined" onClick={onClose} color="error" disabled={isClosingCashRegister}>
           Cancelar
         </Button>
-        <Button variant="contained" onClick={handleCloseCashRegister}>
+        <LoadingButton variant="contained" onClick={handleCloseCashRegister} loading={isClosingCashRegister} loadingPosition="end">
           Cerrar
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </>
   );

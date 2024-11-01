@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Grid2,
-  InputLabel,
-  Stack,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { Box, Button, DialogContent, DialogTitle, Divider, Grid2, InputLabel, Stack, TextField, Tooltip } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -34,6 +23,7 @@ import AlertCakeDelete from './AlertCakeDelete';
 import { insertCake } from '../../../services/cakeService';
 import { cakeSchema } from '../../../schema/cakeSchema';
 import { ICake } from '../../../../../types/catalog/cake';
+import LoadingButton from '../../../../../components/@extended/LoadingButton';
 
 // constant
 const getInitialValues = (cake: ICake | null) => {
@@ -247,12 +237,12 @@ const FormCakeAdd: React.FC<FormCakeAddProps> = ({ cake, closeModal }) => {
               </Grid2>
               <Grid2 size={{ xs: 6 }} container justifyContent="flex-end">
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Button color="error" onClick={closeModal}>
+                  <Button color="error" onClick={closeModal} disabled={isSubmitting}>
                     Cancelar
                   </Button>
-                  <Button type="submit" variant="contained" disabled={isSubmitting}>
+                  <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingPosition="end">
                     {cake ? 'Editar' : 'Agregar'}
-                  </Button>
+                  </LoadingButton>
                 </Stack>
               </Grid2>
             </Grid2>

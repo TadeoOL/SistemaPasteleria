@@ -1,6 +1,6 @@
 import { Box, Button, Container, IconButton, InputAdornment, Paper, TextField, Typography, useTheme } from '@mui/material';
 
-import React from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { motion } from 'framer-motion';
@@ -14,9 +14,9 @@ import { toast } from 'react-toastify';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-const Login: React.FC = () => {
+const Login = () => {
   const theme = useTheme();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login: loginStore } = useAuthStore();
   const navigate = useNavigate();
   const {
@@ -189,7 +189,7 @@ const Login: React.FC = () => {
   );
 };
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   return (
     <Box
       sx={{
@@ -197,7 +197,7 @@ const LoginPage: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url("/images/bakery-background.jpg")', // Asegúrate de tener esta imagen en tu carpeta public/images
+        backgroundImage: 'url("/images/bakery-background.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'relative',
@@ -208,8 +208,8 @@ const LoginPage: React.FC = () => {
           right: 0,
           bottom: 0,
           left: 0,
-          backgroundColor: 'rgba(255, 255, 255, 0.5)', // Ajusta la opacidad según necesites
-          backdropFilter: 'blur(8px)' // Ajusta el valor de blur según prefieras
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          backdropFilter: 'blur(8px)'
         }
       }}
     >

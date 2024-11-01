@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Grid2,
-  InputLabel,
-  Stack,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { Box, Button, DialogContent, DialogTitle, Divider, Grid2, InputLabel, Stack, TextField, Tooltip } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -34,6 +23,7 @@ import IProduct from '../../../../../types/catalog/product';
 import { productSchema } from '../../../schema/productSchema';
 import AlertProductDelete from './AlertProductDelete';
 import { insertProduct } from '../../../services/productService';
+import LoadingButton from '../../../../../components/@extended/LoadingButton';
 
 // constant
 const getInitialValues = (product: IProduct | null) => {
@@ -213,12 +203,12 @@ const FormProductAdd: React.FC<FormProductAddProps> = ({ product, closeModal }) 
               </Grid2>
               <Grid2 size={{ xs: 6 }} container justifyContent="flex-end">
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Button color="error" onClick={closeModal}>
+                  <Button color="error" onClick={closeModal} disabled={isSubmitting}>
                     Cancelar
                   </Button>
-                  <Button type="submit" variant="contained" disabled={isSubmitting}>
+                  <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingPosition="end">
                     {product ? 'Editar' : 'Agregar'}
-                  </Button>
+                  </LoadingButton>
                 </Stack>
               </Grid2>
             </Grid2>

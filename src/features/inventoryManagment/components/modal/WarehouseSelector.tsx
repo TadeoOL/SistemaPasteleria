@@ -5,6 +5,7 @@ import { IWarehouse } from '../../../../types/catalog/warehouse';
 import useWarehouseSelectedStore from '../../store/warehouseSelected';
 import CircularWithPath from '../../../../components/@extended/progress/CircularWithPath';
 import { Warehouse as WarehouseIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 interface WarehouseSelectorProps {
   onClose: () => void;
@@ -15,6 +16,7 @@ interface WarehouseSelectorProps {
 export const WarehouseSelector: React.FC<WarehouseSelectorProps> = ({ onClose, warehouses, isLoadingWarehouses }) => {
   const { setWarehouse } = useWarehouseSelectedStore();
   const [selectedWarehouse, setSelectedWarehouse] = useState<IWarehouse | null>(null);
+  const navigate = useNavigate();
 
   const handleWarehouseSelect = useCallback((warehouse: IWarehouse) => {
     setSelectedWarehouse(warehouse);
@@ -25,6 +27,12 @@ export const WarehouseSelector: React.FC<WarehouseSelectorProps> = ({ onClose, w
       setWarehouse(selectedWarehouse);
       onClose();
     }
+  };
+
+  const handleCancel = () => {
+    setSelectedWarehouse(null);
+    onClose();
+    navigate('/');
   };
 
   if (isLoadingWarehouses) return <CircularWithPath />;
@@ -59,7 +67,10 @@ export const WarehouseSelector: React.FC<WarehouseSelectorProps> = ({ onClose, w
           </Typography>
         </Box>
       )}
-      <Box mt={4} display="flex" justifyContent="flex-end">
+      <Box mt={4} display="flex" justifyContent="space-between">
+        <Button variant="outlined" color="error" onClick={handleCancel}>
+          Cancelar
+        </Button>
         <Button variant="contained" color="primary" onClick={handleConfirm} disabled={!selectedWarehouse}>
           Confirmar selección
         </Button>

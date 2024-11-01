@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Grid2,
-  InputLabel,
-  Stack,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { Box, Button, DialogContent, DialogTitle, Divider, Grid2, InputLabel, Stack, TextField, Tooltip } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -35,6 +24,7 @@ import AlertBranchDelete from './AlertBranchDelete';
 import { IBranch } from '../../../../../types/catalog/branch';
 import { insertBranch } from '../../../services/branchService';
 import { branchSchema } from '../../../schema/branchSchema';
+import LoadingButton from '../../../../../components/@extended/LoadingButton';
 
 // constant
 const getInitialValues = (warehouse: IWarehouse | null) => {
@@ -191,12 +181,12 @@ const FormBranchAdd: React.FC<FormBranchAddProps> = ({ branch, closeModal }) => 
               </Grid2>
               <Grid2 size={{ xs: 6 }} container justifyContent="flex-end">
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Button color="error" onClick={closeModal}>
+                  <Button color="error" onClick={closeModal} disabled={isSubmitting}>
                     Cancelar
                   </Button>
-                  <Button type="submit" variant="contained" disabled={isSubmitting}>
+                  <LoadingButton type="submit" variant="contained" loading={isSubmitting} loadingPosition="end">
                     {branch ? 'Editar' : 'Agregar'}
-                  </Button>
+                  </LoadingButton>
                 </Stack>
               </Grid2>
             </Grid2>
