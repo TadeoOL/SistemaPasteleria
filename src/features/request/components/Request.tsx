@@ -152,7 +152,7 @@ const Request = () => {
         FormComponent={(props) => <RequestForm onClose={props.closeModal} />}
         formDataPropName="request"
         formData={null}
-        open={open && profile?.roles.includes('ADMIN')}
+        open={open && profile !== null && profile?.roles.includes('ADMIN')}
         modalToggler={() => setOpen(false)}
       />
       <GenericModal<IRequest>
@@ -168,7 +168,7 @@ const Request = () => {
         FormComponent={(props) => <RequestCompleteForm onClose={props.closeModal} request={props.request} />}
         formDataPropName="request"
         formData={requestSelected}
-        open={openComplete && profile?.roles.includes('ADMIN')}
+        open={openComplete && profile !== null && profile?.roles.includes('ADMIN')}
         modalToggler={() => setOpenComplete(false)}
       />
     </>

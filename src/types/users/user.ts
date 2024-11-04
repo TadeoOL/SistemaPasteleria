@@ -21,4 +21,5 @@ export interface IUserDto {
   roles: string[];
   id_Sucursal: string;
   sucursal: string;
+  token?: string;
 }

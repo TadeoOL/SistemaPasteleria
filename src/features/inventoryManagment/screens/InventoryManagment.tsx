@@ -20,7 +20,7 @@ export const InventoryManagment = () => {
   const location = useLocation();
   const isProducts = location.pathname.includes('productos');
 
-  if (!profile.id_Sucursal) {
+  if (profile && !profile.id_Sucursal) {
     toast.error('No tienes ninguna sucursal asignada');
     navigate('/');
   }

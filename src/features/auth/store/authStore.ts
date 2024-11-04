@@ -1,16 +1,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { restoreStores } from "../../../store/restoreStores";
+import { IUserDto } from "../../../types/users/user";
 
 interface Action {
-    login: (profile: IUser) => void;
+    login: (profile: IUserDto) => void;
     logout: () => void;
 }
 
 interface State {
     isAuthenticated: boolean;
     token: string;
-    profile: IUser | null;
+    profile: IUserDto | null;
 }
 
 const initialState: State = {
@@ -21,7 +22,7 @@ const initialState: State = {
 
 export const useAuthStore = create(persist<State & Action>((set) => ({
     ...initialState,
-    login: (profile: IUser) => set(() => ({ isAuthenticated: true,profile, token: profile.token })),
+    login: (profile: IUserDto) => set(() => ({ isAuthenticated: true, profile, token: profile.token })),
     logout: () => {
         set(initialState);
         restoreStores();
